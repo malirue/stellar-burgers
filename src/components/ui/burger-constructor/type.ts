@@ -1,13 +1,18 @@
-import { TConstructorIngredient, TIngredient, TOrder } from '@utils-types';
+import {
+  TBun,
+  TConstructorIngredient,
+  TIngredient,
+  TOrder
+} from '@utils-types';
 
 // Тип для булочки
-export interface TBun {
-  _id: string;
-  name: string;
-  price: number;
-  image: string;
-  type: 'bun';
-}
+// export interface TBun {
+//   _id: string;
+//   name: string;
+//   price: number;
+//   image: string;
+//   type: 'bun';
+// }
 
 // Полный тип constructorItems
 export interface ConstructorItems {

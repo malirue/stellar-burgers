@@ -1,24 +1,32 @@
 import { FC, useMemo } from 'react';
+import { useAppDispatch, useAppSelector } from '../../services/store';
 import { TConstructorIngredient } from '@utils-types';
 import { BurgerConstructorUI } from '@ui';
 import { ConstructorItems } from '../ui/burger-constructor/type';
+import {
+  setOrderRequest,
+  setOrderModalData,
+  setBun,
+  addIngredient
+} from '../../services/slices/burgerConstructorSlice';
 
 export const BurgerConstructor: FC = () => {
   /** TODO: взять переменные constructorItems, orderRequest и orderModalData из стора */
 
-  const constructorItems: ConstructorItems = {
-    bun: null,
-    ingredients: []
-  };
-
-  const orderRequest = false;
-
-  const orderModalData = null;
+  const dispatch = useAppDispatch();
+  const { constructorItems, orderRequest, orderModalData } = useAppSelector(
+    (state) => state.burgerConstructor
+  );
 
   const onOrderClick = () => {
     if (!constructorItems.bun || orderRequest) return;
+    dispatch(setOrderRequest(true));
+    // Здесь будет логика оформления заказа
   };
-  const closeOrderModal = () => {};
+
+  const closeOrderModal = () => {
+    dispatch(setOrderModalData(null));
+  };
 
   const price = useMemo(
     () =>

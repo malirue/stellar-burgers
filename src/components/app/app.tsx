@@ -132,7 +132,7 @@ const App = () => {
               }
             />
 
-            {/* 404 — должен быть последним */}
+            {/* 404 */}
             <Route path='*' element={<NotFound404 />} />
           </Routes>
         )}
