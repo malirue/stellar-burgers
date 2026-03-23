@@ -1,7 +1,11 @@
 const path = require('path');
+const webpack = require('webpack');
 const ESLintPlugin = require('eslint-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const Dotenv = require('dotenv-webpack');
+
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config();
+}
 
 module.exports = {
   entry: path.resolve(__dirname, './src/index.tsx'),
@@ -54,7 +58,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: './public/index.html'
     }),
-    new Dotenv()
+    new webpack.EnvironmentPlugin(['BURGER_API_URL'])
   ],
   resolve: {
     extensions: [

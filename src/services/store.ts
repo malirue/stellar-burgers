@@ -23,8 +23,10 @@ const store = configureStore({
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
-
 export type AppDispatch = typeof store.dispatch;
+
+export const useDispatch = dispatchHook;
+export const useSelector = selectorHook;
 
 export const useAppDispatch: () => AppDispatch = () => dispatchHook();
 export const useAppSelector: TypedUseSelectorHook<RootState> = selectorHook;
