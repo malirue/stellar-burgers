@@ -1,6 +1,12 @@
-import { getFeedsApi, getOrderByNumberApi, getOrdersApi } from '@api';
+import {
+  getFeedsApi,
+  getOrderByIdApi,
+  getOrderByNumberApi,
+  getOrdersApi
+} from '@api';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { TOrder } from '@utils-types';
+import { RootState } from '../store';
 
 export const fetchUserOrders = createAsyncThunk(
   'orders/fetchUserOrders',
@@ -34,6 +40,18 @@ export const fetchOrderByNumber = createAsyncThunk(
       return response.orders[0];
     } catch (error) {
       return rejectWithValue('Заказ не найден');
+    }
+  }
+);
+
+export const fetchOrderById = createAsyncThunk(
+  'orders/fetchById',
+  async (id: number | string, { rejectWithValue }) => {
+    try {
+      const response = await getOrderByIdApi(String(id));
+      return response.orders[0];
+    } catch (error) {
+      return rejectWithValue(`Заказ №${id} не найден`);
     }
   }
 );
@@ -99,4 +117,13 @@ export const ordersSlice = createSlice({
 });
 
 export const { clearCurrentOrder } = ordersSlice.actions;
+
+// Селекторы
+export const selectUserOrders = (state: RootState) => state.orders.userOrders;
+export const selectFeedOrders = (state: RootState) => state.orders.feedOrders;
+export const selectCurrentOrder = (state: RootState) =>
+  state.orders.currentOrder;
+export const selectOrdersLoading = (state: RootState) => state.orders.isLoading;
+export const selectOrdersError = (state: RootState) => state.orders.error;
+
 export default ordersSlice.reducer;

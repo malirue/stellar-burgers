@@ -30,11 +30,6 @@ import { useEffect } from 'react';
 import { fetchIngredients } from '../../services/slices/ingredientsSlice';
 
 const App = () => {
-  /** TODO: взять переменные из стора */
-  // const isIngredientsLoading = false;
-  // const ingredients = [];
-  // const error = null;
-
   const dispatch = useAppDispatch();
 
   const isIngredientsLoading = useAppSelector(

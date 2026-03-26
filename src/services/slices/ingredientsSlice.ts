@@ -1,4 +1,4 @@
-import { getIngredientsApi } from '@api';
+import { getIngredientByIdApi, getIngredientsApi } from '@api';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { TIngredient } from '@utils-types';
 import { RootState } from '../store';
@@ -10,6 +10,18 @@ export const fetchIngredients = createAsyncThunk(
       return await getIngredientsApi();
     } catch (error) {
       return rejectWithValue('Ошибка загрузки ингредиентов');
+    }
+  }
+);
+
+export const fetchIngredientById = createAsyncThunk(
+  'ingredients/fetchById',
+  async (id: string, { rejectWithValue }) => {
+    try {
+      const ingredient = await getIngredientByIdApi(id);
+      return ingredient;
+    } catch (error) {
+      return rejectWithValue(`Ошибка загрузки ингредиента с ID ${id}`);
     }
   }
 );

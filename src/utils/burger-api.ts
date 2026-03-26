@@ -79,6 +79,16 @@ export const getIngredientsApi = () =>
       return Promise.reject(data);
     });
 
+export const getIngredientByIdApi = async (
+  id: string
+): Promise<TIngredient> => {
+  const response = await fetch(`${URL}/ingredients/${id}`);
+  if (!response.ok) {
+    throw new Error('Failed to fetch ingredient');
+  }
+  return response.json();
+};
+
 export const getFeedsApi = () =>
   fetch(`${URL}/orders/all`)
     .then((res) => checkResponse<TFeedsResponse>(res))
@@ -98,6 +108,16 @@ export const getOrdersApi = () =>
     if (data?.success) return data.orders;
     return Promise.reject(data);
   });
+
+export const getOrderByIdApi = async (
+  id: string
+): Promise<{ orders: TOrder[] }> => {
+  const response = await fetch(`${URL}/orders/${id}`);
+  if (!response.ok) {
+    throw new Error('Failed to fetch order');
+  }
+  return response.json();
+};
 
 type TOwner = {
   name: string;
