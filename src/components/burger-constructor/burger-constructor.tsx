@@ -1,8 +1,8 @@
 import { FC, useMemo } from 'react';
-import { useAppDispatch, useAppSelector } from '../../services/store';
 import { TConstructorIngredient } from '@utils-types';
 import { BurgerConstructorUI } from '@ui';
 import { ConstructorItems } from '../ui/burger-constructor/type';
+import { useAppDispatch, useAppSelector } from '../../services/store';
 import {
   setOrderRequest,
   setOrderModalData,
@@ -14,6 +14,7 @@ export const BurgerConstructor: FC = () => {
   /** TODO: взять переменные constructorItems, orderRequest и orderModalData из стора */
 
   const dispatch = useAppDispatch();
+
   const { constructorItems, orderRequest, orderModalData } = useAppSelector(
     (state) => state.burgerConstructor
   );

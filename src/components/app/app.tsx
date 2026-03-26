@@ -27,7 +27,7 @@ import {
 } from '../../services/store';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { useEffect } from 'react';
-import { fetchIngredients } from '.././../services/slices/ingredientsSlice';
+import { fetchIngredients } from '../../services/slices/ingredientsSlice';
 
 const App = () => {
   /** TODO: взять переменные из стора */

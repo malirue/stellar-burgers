@@ -1,5 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { TBun, TConstructorIngredient, TOrder } from '@utils-types';
+import {
+  TBun,
+  TConstructorIngredient,
+  TIngredient,
+  TOrder
+} from '@utils-types';
 import { ConstructorItems } from 'src/components/ui/burger-constructor/type';
 
 interface BurgerConstructorState {
@@ -24,15 +29,8 @@ export const burgerConstructorSlice = createSlice({
     addIngredient: (state, action: PayloadAction<TConstructorIngredient>) => {
       state.constructorItems.ingredients.push(action.payload);
     },
-    setBun: (state, action: PayloadAction<TConstructorIngredient>) => {
-      if (action.payload.type === 'bun') {
-        state.constructorItems.bun = action.payload as TBun;
-      } else {
-        console.warn(
-          'Попытка установить не булочку как булочку:',
-          action.payload
-        );
-      }
+    setBun: (state, action: PayloadAction<TBun>) => {
+      state.constructorItems.bun = action.payload;
     },
     removeIngredient: (state, action: PayloadAction<{ index: number }>) => {
       state.constructorItems.ingredients.splice(action.payload.index, 1);
