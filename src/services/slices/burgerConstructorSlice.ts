@@ -1,4 +1,5 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { getOrdersApi, orderBurgerApi, TNewOrderResponse } from '@api';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import {
   TBun,
   TConstructorIngredient,
@@ -11,6 +12,7 @@ interface BurgerConstructorState {
   constructorItems: ConstructorItems;
   orderRequest: boolean;
   orderModalData: TOrder | null;
+  orderError: string | null;
 }
 
 const initialState: BurgerConstructorState = {
@@ -19,7 +21,8 @@ const initialState: BurgerConstructorState = {
     ingredients: []
   },
   orderRequest: false,
-  orderModalData: null
+  orderModalData: null,
+  orderError: null
 };
 
 export const burgerConstructorSlice = createSlice({
@@ -47,14 +50,44 @@ export const burgerConstructorSlice = createSlice({
     setOrderRequest: (state, action: PayloadAction<boolean>) => {
       state.orderRequest = action.payload;
     },
-    setOrderModalData: (state, action: PayloadAction<TOrder | null>) => {
-      state.orderModalData = action.payload;
-    },
+
     resetConstructor: (state) => {
       state.constructorItems = { bun: null, ingredients: [] };
+      state.orderModalData = null;
     }
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchOrder.pending, (state) => {
+        state.orderRequest = true;
+        state.orderError = null;
+      })
+      .addCase(fetchOrder.fulfilled, (state, action) => {
+        state.orderModalData = action.payload.order as any;
+        state.orderRequest = false;
+      })
+      .addCase(fetchOrder.rejected, (state, action) => {
+        state.orderRequest = false;
+        state.orderError = action.payload as string;
+      });
   }
 });
+
+export const fetchOrder = createAsyncThunk(
+  'burgerConstructor/fetchOrder',
+  async (data: string[], { rejectWithValue }): Promise<TNewOrderResponse> => {
+    try {
+      const response = await orderBurgerApi(data);
+
+      if (Array.isArray(response) && response.length > 0) {
+        return response[0];
+      }
+      return response;
+    } catch (error) {
+      return rejectWithValue('Ошибка оформления заказа') as any;
+    }
+  }
+);
 
 export const {
   addIngredient,
@@ -62,7 +95,6 @@ export const {
   removeIngredient,
   moveIngredient,
   setOrderRequest,
-  setOrderModalData,
   resetConstructor
 } = burgerConstructorSlice.actions;
 

@@ -1,9 +1,4 @@
-import {
-  getFeedsApi,
-  getOrderByIdApi,
-  getOrderByNumberApi,
-  getOrdersApi
-} from '@api';
+import { getFeedsApi, getOrderByNumberApi, getOrdersApi } from '@api';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { TOrder } from '@utils-types';
 import { RootState } from '../store';
@@ -40,18 +35,6 @@ export const fetchOrderByNumber = createAsyncThunk(
       return response.orders[0];
     } catch (error) {
       return rejectWithValue('Заказ не найден');
-    }
-  }
-);
-
-export const fetchOrderById = createAsyncThunk(
-  'orders/fetchById',
-  async (id: number | string, { rejectWithValue }) => {
-    try {
-      const response = await getOrderByIdApi(String(id));
-      return response.orders[0];
-    } catch (error) {
-      return rejectWithValue(`Заказ №${id} не найден`);
     }
   }
 );
@@ -105,6 +88,10 @@ export const ordersSlice = createSlice({
       .addCase(fetchOrderByNumber.fulfilled, (state, action) => {
         state.currentOrder = action.payload;
         state.isLoading = false;
+      })
+      .addCase(fetchOrderByNumber.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload as string;
       });
     //   .addMatcher(
     //     (action) => action.type.endsWith('/rejected'),

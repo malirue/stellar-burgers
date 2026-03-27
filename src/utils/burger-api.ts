@@ -109,16 +109,6 @@ export const getOrdersApi = () =>
     return Promise.reject(data);
   });
 
-export const getOrderByIdApi = async (
-  id: string
-): Promise<{ orders: TOrder[] }> => {
-  const response = await fetch(`${URL}/orders/${id}`);
-  if (!response.ok) {
-    throw new Error('Failed to fetch order');
-  }
-  return response.json();
-};
-
 type TOwner = {
   name: string;
   email: string;
@@ -137,7 +127,7 @@ type TNewOrder = {
   price: number;
 };
 
-type TNewOrderResponse = TServerResponse<{
+export type TNewOrderResponse = TServerResponse<{
   order: TNewOrder;
   name: string;
 }>;
@@ -153,7 +143,7 @@ export const orderBurgerApi = (data: string[]) =>
       ingredients: data
     })
   }).then((data) => {
-    if (data?.success) return data;
+    if (data?.success) return data; //от тут исправила
     return Promise.reject(data);
   });
 

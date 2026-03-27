@@ -13,6 +13,7 @@ import {
 
 export const OrderInfo: FC = () => {
   const { number } = useParams();
+  console.log('OrderInfo rendered, number:', number);
   const dispatch = useAppDispatch();
 
   // Берём данные из стора
@@ -22,7 +23,9 @@ export const OrderInfo: FC = () => {
   const error = useAppSelector(selectOrdersError);
 
   useEffect(() => {
+    console.log('OrderInfo mounted, number:', number);
     if (number) {
+      console.log('Dispatching fetchOrderByNumber with:', Number(number));
       dispatch(fetchOrderByNumber(Number(number)));
     }
   }, [number, dispatch]);
