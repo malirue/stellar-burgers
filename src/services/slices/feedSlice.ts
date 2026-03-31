@@ -9,7 +9,7 @@ interface FeedResponse {
   totalToday: number;
 }
 
-interface FeedState {
+export interface FeedState {
   orders: TOrder[];
   total: number;
   totalToday: number;
@@ -25,7 +25,6 @@ const initialState: FeedState = {
   error: null
 };
 
-// Асинхронный экшен для загрузки ленты заказов
 export const fetchFeed = createAsyncThunk<
   FeedResponse,
   void,
@@ -33,15 +32,12 @@ export const fetchFeed = createAsyncThunk<
 >('feed/fetchFeed', async (_, { rejectWithValue }) => {
   try {
     const response: FeedResponse = await getFeedsApi();
-    console.log('API Response:', response);
     return response;
   } catch (error) {
-    console.error('API Error:', error);
     return rejectWithValue('Ошибка загрузки ленты заказов');
   }
 });
 
-// Экшен для обновления ленты в реальном времени (WebSocket)
 export const updateFeed = createAsyncThunk<
   { orders: TOrder[]; total: number; totalToday: number },
   TOrder,
@@ -74,6 +70,7 @@ export const feedSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchFeed.fulfilled, (state, action) => {
+        // исправлено: fulfilled
         state.isLoading = false;
         state.orders = action.payload.orders;
         state.total = action.payload.total;
@@ -84,6 +81,7 @@ export const feedSlice = createSlice({
         state.error = action.payload as string;
       })
       .addCase(updateFeed.fulfilled, (state, action) => {
+        // исправлено: fulfilled
         state.orders = action.payload.orders;
         state.total = action.payload.total;
         state.totalToday = action.payload.totalToday;

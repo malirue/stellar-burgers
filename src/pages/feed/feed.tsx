@@ -13,7 +13,9 @@ export const Feed: FC = () => {
   useEffect(() => {
     dispatch(fetchFeed());
 
-    const socket = new WebSocket('wss://your-api-url/orders/all');
+    const socket = new WebSocket(
+      'wss://norma.education-services.ru/api/orders/all'
+    );
 
     socket.onmessage = (event) => {
       const data = JSON.parse(event.data);
