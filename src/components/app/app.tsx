@@ -25,7 +25,7 @@ import {
   useAppDispatch,
   useAppSelector
 } from '../../services/store';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import { useEffect } from 'react';
 import { fetchIngredients } from '../../services/slices/ingredientsSlice';
 
@@ -63,39 +63,12 @@ const App = () => {
           <Route path='/' element={<ConstructorPage />} />
           <Route path='/feed' element={<Feed />} />
 
+          <Route path='/login' element={<Login />} />
+          <Route path='/register' element={<Register />} />
+          <Route path='/forgot-password' element={<ForgotPassword />} />
+          <Route path='/reset-password' element={<ResetPassword />} />
+
           {/* ЗАЩИЩЁННЫЕ МАРШРУТЫ */}
-          <Route
-            path='/login'
-            element={
-              <ProtectedRoute>
-                <Login />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path='/register'
-            element={
-              <ProtectedRoute>
-                <Register />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path='/forgot-password'
-            element={
-              <ProtectedRoute>
-                <ForgotPassword />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path='/reset-password'
-            element={
-              <ProtectedRoute>
-                <ResetPassword />
-              </ProtectedRoute>
-            }
-          />
           <Route
             path='/profile'
             element={

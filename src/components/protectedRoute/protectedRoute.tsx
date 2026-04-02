@@ -30,7 +30,11 @@ export const ProtectedRoute = ({
   children?: React.ReactNode;
 }) => {
   // Временная заглушка: считаем, что пользователь всегда авторизован
-  const isAuthenticated = true; // В будущем заменим на проверку из стора
+  // const isAuthenticated = true; // В будущем заменим на проверку из стора
+
+  const { user, isAuthenticated } = useSelector(
+    (state: RootState) => state.user
+  );
 
   if (!isAuthenticated) {
     return <Navigate to='/login' replace />;

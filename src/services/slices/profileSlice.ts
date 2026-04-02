@@ -13,7 +13,6 @@ export const registerUser = createAsyncThunk(
   }
 );
 
-// Thunk для входа
 export const loginUser = createAsyncThunk(
   'auth/login',
   async (
@@ -24,6 +23,18 @@ export const loginUser = createAsyncThunk(
       return await loginUserApi(credentials);
     } catch (error) {
       return rejectWithValue('Ошибка входа');
+    }
+  }
+);
+
+export const logoutUser = createAsyncThunk(
+  'auth/logout',
+  async (_, { rejectWithValue }) => {
+    try {
+      await logoutApi();
+      return;
+    } catch (error) {
+      return rejectWithValue('Ошибка выхода');
     }
   }
 );
@@ -65,6 +76,10 @@ export const profileSlice = createSlice({
         state.isAuthenticated = true;
         state.isLoading = false;
       })
+      .addCase(registerUser.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload as string;
+      })
       .addCase(loginUser.pending, (state) => {
         state.isLoading = true;
         state.error = null;
@@ -73,15 +88,23 @@ export const profileSlice = createSlice({
         state.user = action.payload.user;
         state.isAuthenticated = true;
         state.isLoading = false;
+      })
+      .addCase(loginUser.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload as string;
+      })
+      .addCase(logoutUser.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(logoutUser.fulfilled, (state) => {
+        state.user = null;
+        state.isAuthenticated = false;
+        state.isLoading = false;
+      })
+      .addCase(logoutUser.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload as string;
       });
-    //   .addCase(logoutApi.pending, (state) => {
-    //     state.isLoading = true;
-    //   })
-    //   .addCase(logoutApi.fulfilled, (state) => {
-    //     state.user = null;
-    //     state.isAuthenticated = false;
-    //     state.isLoading = false;
-    //   });
   }
 });
 
