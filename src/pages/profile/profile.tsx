@@ -1,10 +1,11 @@
-import { useAppSelector } from '@services';
+import { TRegisterData } from '@api';
+import { updateUser, useAppDispatch, useAppSelector } from '@services';
 import { ProfileUI } from '@ui-pages';
 import { TUser } from '@utils-types';
 import { FC, SyntheticEvent, useEffect, useState } from 'react';
 
 export const Profile: FC = () => {
-  /** TODO: взять переменную из стора */
+  const dispatch = useAppDispatch();
   const user: TUser | null = useAppSelector((state) => state.user.user);
 
   const [formValue, setFormValue] = useState({
@@ -28,8 +29,27 @@ export const Profile: FC = () => {
     (user && formValue.email !== user.email) ||
     !!formValue.password;
 
-  const handleSubmit = (e: SyntheticEvent) => {
+  const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
+
+    if (!isFormChanged) return;
+
+    const updateData: Partial<TRegisterData> = {};
+
+    // Добавляем только изменённые поля
+    if (user?.name !== formValue.name) {
+      updateData.name = formValue.name;
+    }
+    if (user?.email !== formValue.email) {
+      updateData.email = formValue.email;
+    }
+    if (formValue.password) {
+      updateData.password = formValue.password;
+    }
+
+    if (Object.keys(updateData).length > 0) {
+      await dispatch(updateUser(updateData));
+    }
   };
 
   const handleCancel = (e: SyntheticEvent) => {
@@ -52,8 +72,8 @@ export const Profile: FC = () => {
     <ProfileUI
       formValue={formValue}
       isFormChanged={isFormChanged}
-      handleCancel={handleCancel}
       handleSubmit={handleSubmit}
+      handleCancel={handleCancel}
       handleInputChange={handleInputChange}
     />
   );

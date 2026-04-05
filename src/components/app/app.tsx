@@ -36,16 +36,11 @@ const App = () => {
   const isIngredientsLoading = useAppSelector(
     (state: RootState) => state.ingredients.isLoading
   );
-  const ingredients = useAppSelector(
-    (state: RootState) => state.ingredients.items
-  );
   const error = useAppSelector((state: RootState) => state.ingredients.error);
 
-  const {
-    user,
-    isAuthenticated,
-    isLoading: isAuthLoading
-  } = useAppSelector((state: RootState) => state.user);
+  const { isLoading: isAuthLoading } = useAppSelector(
+    (state: RootState) => state.user
+  );
 
   const navigate = useNavigate();
 
