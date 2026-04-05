@@ -1,12 +1,13 @@
 import { TRegisterData } from '@api';
 import { updateUser, useAppDispatch, useAppSelector } from '@services';
 import { ProfileUI } from '@ui-pages';
-import { TUser } from '@utils-types';
+
 import { FC, SyntheticEvent, useEffect, useState } from 'react';
 
 export const Profile: FC = () => {
   const dispatch = useAppDispatch();
-  const user: TUser | null = useAppSelector((state) => state.user.user);
+  const user = useAppSelector((state) => state.user.user)!;
+  const isLoading = useAppSelector((state) => state.user.isLoading);
 
   const [formValue, setFormValue] = useState({
     name: user?.name || '',
@@ -15,13 +16,11 @@ export const Profile: FC = () => {
   });
 
   useEffect(() => {
-    if (user) {
-      setFormValue((prevState) => ({
-        ...prevState,
-        name: user.name,
-        email: user.email
-      }));
-    }
+    setFormValue((prevState) => ({
+      ...prevState,
+      name: user.name,
+      email: user.email
+    }));
   }, [user]);
 
   const isFormChanged =
@@ -36,7 +35,6 @@ export const Profile: FC = () => {
 
     const updateData: Partial<TRegisterData> = {};
 
-    // Добавляем только изменённые поля
     if (user?.name !== formValue.name) {
       updateData.name = formValue.name;
     }
@@ -55,8 +53,8 @@ export const Profile: FC = () => {
   const handleCancel = (e: SyntheticEvent) => {
     e.preventDefault();
     setFormValue({
-      name: user?.name || '',
-      email: user?.email || '',
+      name: user.name,
+      email: user.email,
       password: ''
     });
   };

@@ -1,24 +1,24 @@
 import { FC, useCallback, useMemo } from 'react';
-import { TConstructorIngredient, TOrder } from '@utils-types';
+import { TConstructorIngredient } from '@utils-types';
 import { BurgerConstructorUI } from '@ui';
-import { ConstructorItems } from '../ui/burger-constructor/type';
-import { useAppDispatch, useAppSelector } from '../../services/store';
 import {
-  setOrderRequest,
-  setBun,
-  addIngredient,
   fetchOrder,
-  resetConstructor
-} from '../../services/slices/burgerConstructorSlice';
+  resetConstructor,
+  setOrderRequest,
+  useAppDispatch,
+  useAppSelector
+} from '@services';
+import { useNavigate } from 'react-router-dom';
 
 export const BurgerConstructor: FC = () => {
-  /** TODO: взять переменные constructorItems, orderRequest и orderModalData из стора */
-
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const { constructorItems, orderRequest, orderModalData } = useAppSelector(
     (state) => state.burgerConstructor
   );
+
+  const isAuthenticated = useAppSelector((state) => state.user.isAuthenticated);
 
   const price = useMemo(
     () =>
@@ -31,6 +31,11 @@ export const BurgerConstructor: FC = () => {
   );
 
   const onOrderClick = useCallback(() => {
+    if (!isAuthenticated) {
+      navigate('/login');
+      return;
+    }
+
     if (!constructorItems.bun || orderRequest) return;
 
     dispatch(setOrderRequest(true));

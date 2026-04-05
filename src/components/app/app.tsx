@@ -73,6 +73,7 @@ const App = () => {
           <Route path='/reset-password' element={<ResetPassword />} />
 
           {/* ЗАЩИЩЁННЫЕ МАРШРУТЫ */}
+
           <Route
             path='/profile'
             element={
