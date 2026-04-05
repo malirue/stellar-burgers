@@ -25,7 +25,7 @@ import {
   useAppDispatch,
   useAppSelector
 } from '../../services/store';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { fetchIngredients } from '../../services/slices/ingredientsSlice';
 
@@ -45,6 +45,8 @@ const App = () => {
     isAuthenticated,
     isLoading: isAuthLoading
   } = useAppSelector((state: RootState) => state.user);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(fetchIngredients());
@@ -129,7 +131,7 @@ const App = () => {
               <ProtectedRoute>
                 <Modal
                   title='Информация о заказе'
-                  onClose={() => window.history.back()}
+                  onClose={() => navigate('/profile/orders')}
                 >
                   <OrderInfo />
                 </Modal>

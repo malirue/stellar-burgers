@@ -10,7 +10,6 @@ import { fetchUserOrders } from '../../services/slices/ordersSlice';
 import { Preloader } from '@ui';
 
 export const ProfileOrders: FC = () => {
-  /** TODO: взять переменную из стора */
   const dispatch = useAppDispatch();
   const orders: TOrder[] = useAppSelector(
     (state: RootState) => state.orders.userOrders
@@ -36,10 +35,6 @@ export const ProfileOrders: FC = () => {
 
   if (isLoading) {
     return <Preloader />;
-  }
-
-  if (orders.length === 0) {
-    return <div>У вас пока нет заказов</div>;
   }
 
   return <ProfileOrdersUI orders={orders} />;
