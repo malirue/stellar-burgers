@@ -1,13 +1,14 @@
 import { ProfileOrdersUI } from '@ui-pages';
 import { TOrder } from '@utils-types';
 import { FC, useEffect } from 'react';
+
+import { Preloader } from '@ui';
 import {
+  fetchUserOrders,
   RootState,
   useAppDispatch,
   useAppSelector
-} from '.././../services/store';
-import { fetchUserOrders } from '../../services/slices/ordersSlice';
-import { Preloader } from '@ui';
+} from '@services';
 
 export const ProfileOrders: FC = () => {
   const dispatch = useAppDispatch();

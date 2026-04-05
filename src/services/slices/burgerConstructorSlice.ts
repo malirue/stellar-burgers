@@ -1,12 +1,7 @@
 import { getOrdersApi, orderBurgerApi, TNewOrderResponse } from '@api';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import {
-  TBun,
-  TConstructorIngredient,
-  TIngredient,
-  TOrder
-} from '@utils-types';
-import { ConstructorItems } from 'src/components/ui/burger-constructor/type';
+import { TBun, TConstructorIngredient, TOrder } from '@utils-types';
+import { ConstructorItems } from '@ui/burger-constructor';
 
 interface BurgerConstructorState {
   constructorItems: ConstructorItems;

@@ -1,5 +1,5 @@
 import { setCookie, getCookie } from './cookie';
-import { TIngredient, TOrder, TOrdersData, TUser } from './types';
+import { TIngredient, TOrder, TUser } from './types';
 
 export const URL = process.env.BURGER_API_URL;
 
@@ -99,10 +99,8 @@ export const getFeedsApi = () =>
 
 export const getOrdersApi = () => {
   const token = getCookie('accessToken');
-  console.log('Полученный токен:', token);
 
   if (!token) {
-    console.error('❌ Токен отсутствует в куки');
     return Promise.reject(new Error('Токен авторизации отсутствует'));
   }
 
@@ -151,7 +149,7 @@ export const orderBurgerApi = (data: string[]) =>
       ingredients: data
     })
   }).then((data) => {
-    if (data?.success) return data; //от тут исправила
+    if (data?.success) return data;
     return Promise.reject(data);
   });
 

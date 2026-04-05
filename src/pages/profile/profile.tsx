@@ -1,7 +1,7 @@
+import { useAppSelector } from '@services';
 import { ProfileUI } from '@ui-pages';
 import { TUser } from '@utils-types';
 import { FC, SyntheticEvent, useEffect, useState } from 'react';
-import { useAppSelector } from '.././../services/store';
 
 export const Profile: FC = () => {
   /** TODO: взять переменную из стора */
@@ -30,7 +30,6 @@ export const Profile: FC = () => {
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
-    console.log('Submit:', formValue);
   };
 
   const handleCancel = (e: SyntheticEvent) => {

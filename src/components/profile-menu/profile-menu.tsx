@@ -12,9 +12,7 @@ export const ProfileMenu: FC = () => {
   const handleLogout = async () => {
     try {
       dispatch(logoutUser());
-    } catch (error) {
-      console.error('Ошибка выхода:', error);
-    }
+    } catch (error) {}
   };
 
   return <ProfileMenuUI handleLogout={handleLogout} pathname={pathname} />;

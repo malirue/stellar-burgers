@@ -9,7 +9,6 @@ export const fetchUserOrders = createAsyncThunk(
     try {
       return await getOrdersApi();
     } catch (error) {
-      // console.error('Полная ошибка загрузки заказов:', error);
       return rejectWithValue('Ошибка загрузки заказов');
     }
   }

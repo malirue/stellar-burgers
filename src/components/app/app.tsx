@@ -20,14 +20,15 @@ import {
   ProtectedRoute
 } from '@components';
 import { Preloader } from '@ui';
+
+import { Route, Routes, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 import {
+  fetchIngredients,
   RootState,
   useAppDispatch,
   useAppSelector
-} from '../../services/store';
-import { Route, Routes, useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
-import { fetchIngredients } from '../../services/slices/ingredientsSlice';
+} from '@services';
 
 const App = () => {
   const dispatch = useAppDispatch();
@@ -52,14 +53,6 @@ const App = () => {
     dispatch(fetchIngredients());
   }, [dispatch]);
 
-  console.log('isIngredientsLoading:', isIngredientsLoading);
-  console.log('ingredients:', ingredients);
-  console.log('error:', error);
-  console.log('user:', user);
-  console.log('isAuthenticated:', isAuthenticated);
-  console.log('isAuthLoading:', isAuthLoading);
-
-  //Загрузка авторизации
   if (isAuthLoading) {
     return <Preloader />;
   }

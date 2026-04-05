@@ -1,12 +1,13 @@
 import { FC, SyntheticEvent, useEffect, useState } from 'react';
 import { LoginUI } from '@ui-pages';
+
+import { useNavigate } from 'react-router-dom';
 import {
+  loginUser,
   RootState,
   useAppDispatch,
   useAppSelector
-} from '../../services/store';
-import { loginUser } from '../../services/slices/profileSlice';
-import { useNavigate } from 'react-router-dom';
+} from '@services';
 
 export const Login: FC = () => {
   const dispatch = useAppDispatch();

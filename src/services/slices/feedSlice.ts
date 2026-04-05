@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { TOrder } from '@utils-types';
 import { RootState } from '../store';
-import { getFeedsApi, getOrdersApi } from '@api';
+import { getFeedsApi } from '@api';
 
 interface FeedResponse {
   orders: TOrder[];
