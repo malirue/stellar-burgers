@@ -263,8 +263,9 @@ export const logoutApi = () =>
   fetch(`${URL}/auth/logout`, {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json;charset=utf-8'
-    },
+      'Content-Type': 'application/json;charset=utf-8',
+      authorization: getCookie('accessToken')
+    } as HeadersInit,
     body: JSON.stringify({
       token: localStorage.getItem('refreshToken')
     })

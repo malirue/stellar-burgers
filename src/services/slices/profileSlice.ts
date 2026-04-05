@@ -1,6 +1,7 @@
 import { loginUserApi, logoutApi, registerUserApi, TRegisterData } from '@api';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { TUser } from '@utils-types';
+import { deleteCookie, setCookie } from '@utils';
 
 export const registerUser = createAsyncThunk(
   'auth/register',
@@ -20,7 +21,10 @@ export const loginUser = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-      return await loginUserApi(credentials);
+      const response = await loginUserApi(credentials);
+      setCookie('accessToken', response.accessToken);
+      localStorage.setItem('refreshToken', response.refreshToken);
+      return response;
     } catch (error) {
       return rejectWithValue('Ошибка входа');
     }
@@ -32,6 +36,8 @@ export const logoutUser = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       await logoutApi();
+      deleteCookie('accessToken');
+      localStorage.setItem('refreshToken', '');
       return;
     } catch (error) {
       return rejectWithValue('Ошибка выхода');
@@ -88,8 +94,6 @@ export const profileSlice = createSlice({
         state.user = action.payload.user;
         state.isAuthenticated = true;
         state.isLoading = false;
-        document.cookie = `accessToken=${action.payload.accessToken}; path=/; max-age=3600; secure; samesite=strict`;
-        console.log('✅ Токен сохранён в куки:', action.payload.accessToken);
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.isLoading = false;

@@ -29,12 +29,18 @@ export const ProfileMenuUI: FC<ProfileMenuUIProps> = ({
     >
       История заказов
     </NavLink>
-    <button
-      className={`text text_type_main-medium text_color_inactive pt-4 pb-4 ${styles.button}`}
+    <NavLink
+      to={'/login'}
       onClick={handleLogout}
+      className={({ isActive }) =>
+        `text text_type_main-medium text_color_inactive pt-4 pb-4 ${
+          styles.link
+        } ${isActive ? styles.link_active : ''}`
+      }
     >
       Выход
-    </button>
+    </NavLink>
+
     <p className='pt-20 text text_type_main-default text_color_inactive'>
       {pathname === '/profile'
         ? 'В этом разделе вы можете изменить свои персональные данные'
