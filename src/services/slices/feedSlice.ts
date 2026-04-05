@@ -70,7 +70,6 @@ export const feedSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchFeed.fulfilled, (state, action) => {
-        // исправлено: fulfilled
         state.isLoading = false;
         state.orders = action.payload.orders;
         state.total = action.payload.total;
@@ -81,7 +80,6 @@ export const feedSlice = createSlice({
         state.error = action.payload as string;
       })
       .addCase(updateFeed.fulfilled, (state, action) => {
-        // исправлено: fulfilled
         state.orders = action.payload.orders;
         state.total = action.payload.total;
         state.totalToday = action.payload.totalToday;

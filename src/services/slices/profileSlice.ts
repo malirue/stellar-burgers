@@ -88,6 +88,8 @@ export const profileSlice = createSlice({
         state.user = action.payload.user;
         state.isAuthenticated = true;
         state.isLoading = false;
+        document.cookie = `accessToken=${action.payload.accessToken}; path=/; max-age=3600; secure; samesite=strict`;
+        console.log('✅ Токен сохранён в куки:', action.payload.accessToken);
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.isLoading = false;

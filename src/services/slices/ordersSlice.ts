@@ -9,6 +9,7 @@ export const fetchUserOrders = createAsyncThunk(
     try {
       return await getOrdersApi();
     } catch (error) {
+      // console.error('Полная ошибка загрузки заказов:', error);
       return rejectWithValue('Ошибка загрузки заказов');
     }
   }
@@ -70,8 +71,14 @@ export const ordersSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchUserOrders.fulfilled, (state, action) => {
-        state.userOrders = action.payload;
+        state.userOrders = action.payload ?? [];
         state.isLoading = false;
+      })
+      .addCase(fetchUserOrders.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error =
+          action.error.message || 'Ошибка загрузки пользовательских заказов';
+        state.userOrders = [];
       })
       .addCase(fetchFeedOrders.pending, (state) => {
         state.isLoading = true;

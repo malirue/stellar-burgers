@@ -97,17 +97,25 @@ export const getFeedsApi = () =>
       return Promise.reject(data);
     });
 
-export const getOrdersApi = () =>
-  fetchWithRefresh<TFeedsResponse>(`${URL}/orders`, {
+export const getOrdersApi = () => {
+  const token = getCookie('accessToken');
+  console.log('Полученный токен:', token);
+
+  if (!token) {
+    console.error('❌ Токен отсутствует в куки');
+    return Promise.reject(new Error('Токен авторизации отсутствует'));
+  }
+
+  return fetchWithRefresh<TFeedsResponse>(`${URL}/orders`, {
     method: 'GET',
     headers: {
-      'Content-Type': 'application/json;charset=utf-8',
-      authorization: getCookie('accessToken')
+      Authorization: token.trim()
     } as HeadersInit
   }).then((data) => {
     if (data?.success) return data.orders;
     return Promise.reject(data);
   });
+};
 
 type TOwner = {
   name: string;

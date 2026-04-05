@@ -40,6 +40,12 @@ const App = () => {
   );
   const error = useAppSelector((state: RootState) => state.ingredients.error);
 
+  const {
+    user,
+    isAuthenticated,
+    isLoading: isAuthLoading
+  } = useAppSelector((state: RootState) => state.user);
+
   useEffect(() => {
     dispatch(fetchIngredients());
   }, [dispatch]);
@@ -47,6 +53,14 @@ const App = () => {
   console.log('isIngredientsLoading:', isIngredientsLoading);
   console.log('ingredients:', ingredients);
   console.log('error:', error);
+  console.log('user:', user);
+  console.log('isAuthenticated:', isAuthenticated);
+  console.log('isAuthLoading:', isAuthLoading);
+
+  //Загрузка авторизации
+  if (isAuthLoading) {
+    return <Preloader />;
+  }
 
   return (
     <div className={styles.app}>
