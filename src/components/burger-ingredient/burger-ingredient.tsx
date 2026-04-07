@@ -1,6 +1,6 @@
 import { FC, memo } from 'react';
 import { useLocation } from 'react-router-dom';
-
+import { v4 as randomUUID } from 'uuid';
 import { BurgerIngredientUI } from '@ui';
 import { TBurgerIngredientProps } from './type';
 import { useAppDispatch } from '../../services/store';
@@ -15,7 +15,7 @@ export const BurgerIngredient: FC<TBurgerIngredientProps> = memo(
     const location = useLocation();
     const dispatch = useAppDispatch();
 
-    const handleAdd = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const handleAdd = (e: React.SyntheticEvent<Element, Event>) => {
       e.stopPropagation();
       if (ingredient.type === 'bun') {
         const bun: TBun = {
@@ -26,7 +26,7 @@ export const BurgerIngredient: FC<TBurgerIngredientProps> = memo(
       } else {
         const ingredientWithId: TConstructorIngredient = {
           ...ingredient,
-          id: ingredient._id
+          id: randomUUID()
         };
         dispatch(addIngredient(ingredientWithId));
       }
