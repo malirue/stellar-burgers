@@ -39,9 +39,6 @@ const App = () => {
     (state: RootState) => state.ingredients.isLoading
   );
 
-  const backgroundLocation = location.state?.background;
-  console.warn('backgroundLocation', backgroundLocation);
-
   const isModalOpen = useMemo(
     () =>
       location.pathname.startsWith('/feed/') ||
@@ -49,12 +46,23 @@ const App = () => {
       location.pathname.startsWith('/profile/orders/'),
     [location.pathname]
   );
+  // было;
 
-  console.warn('isModalOpen', isModalOpen);
+  // const isModalOpen =
+  //   location.pathname.startsWith('/feed/') ||
+  //   location.pathname.startsWith('/ingredients/') ||
+  //   location.pathname.startsWith('/profile/orders/');
 
-  const ingredients = useAppSelector(
-    (state: RootState) => state.ingredients.items
-  );
+  // console.warn('isModalOpen', isModalOpen);
+
+  const backgroundLocation = useMemo(() => {
+    if (location.state?.background) {
+      return location.state.background;
+    }
+    return location.pathname;
+  }, [location]);
+  console.error('location', location);
+
   const error = useAppSelector((state: RootState) => state.ingredients.error);
 
   const { isLoading: isAuthLoading } = useAppSelector(
@@ -81,7 +89,7 @@ const App = () => {
       ) : (
         <>
           {/* ОСНОВНЫЕ МАРШРУТЫ — рендерим только фон */}
-          <Routes location={isModalOpen ? backgroundLocation : location}>
+          <Routes key='main' location={backgroundLocation}>
             <Route path='/' element={<ConstructorPage />} />
             <Route path='/feed' element={<Feed />} />
 
@@ -114,13 +122,13 @@ const App = () => {
           {/* МОДАЛЬНЫЕ ОКНА — рендерим поверх фона */}
           {isModalOpen && (
             <div className={styles.modalOverlay}>
-              <Routes>
+              <Routes key='modal'>
                 <Route
                   path='/feed/:number'
                   element={
                     <Modal
                       title='Информация о заказе'
-                      onClose={() => window.history.back()}
+                      onClose={() => navigate(-1)}
                     >
                       <OrderInfo />
                     </Modal>
@@ -131,7 +139,7 @@ const App = () => {
                   element={
                     <Modal
                       title='Детали ингредиента'
-                      onClose={() => window.history.back()}
+                      onClose={() => navigate(-1)}
                     >
                       <IngredientDetails />
                     </Modal>
@@ -140,14 +148,14 @@ const App = () => {
                 <Route
                   path='/profile/orders/:number'
                   element={
-                    <ProtectedRoute>
-                      <Modal
-                        title='Информация о заказе'
-                        onClose={() => window.history.back()}
-                      >
-                        <OrderInfo />
-                      </Modal>
-                    </ProtectedRoute>
+                    <Modal
+                      title='Информация о заказе'
+                      onClose={() =>
+                        navigate('/profile/orders', { replace: true })
+                      }
+                    >
+                      <OrderInfo />
+                    </Modal>
                   }
                 />
               </Routes>

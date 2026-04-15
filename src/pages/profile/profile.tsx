@@ -2,9 +2,9 @@ import { TRegisterData } from '@api';
 import { updateUser, useAppDispatch, useAppSelector } from '@services';
 import { ProfileUI } from '@ui-pages';
 
-import { FC, SyntheticEvent, useEffect, useState } from 'react';
+import { FC, memo, SyntheticEvent, useEffect, useState } from 'react';
 
-export const Profile: FC = () => {
+export const Profile: FC = memo(() => {
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.user.user)!;
   const isLoading = useAppSelector((state) => state.user.isLoading);
@@ -75,4 +75,4 @@ export const Profile: FC = () => {
       handleInputChange={handleInputChange}
     />
   );
-};
+});

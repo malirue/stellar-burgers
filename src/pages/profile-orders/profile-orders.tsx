@@ -1,6 +1,6 @@
 import { ProfileOrdersUI } from '@ui-pages';
 import { TOrder } from '@utils-types';
-import { FC, useEffect } from 'react';
+import { FC, memo, useEffect } from 'react';
 
 import { Preloader } from '@ui';
 import {
@@ -10,7 +10,7 @@ import {
   useAppSelector
 } from '@services';
 
-export const ProfileOrders: FC = () => {
+export const ProfileOrders: FC = memo(() => {
   const dispatch = useAppDispatch();
   const orders: TOrder[] = useAppSelector(
     (state: RootState) => state.orders.userOrders
@@ -19,7 +19,6 @@ export const ProfileOrders: FC = () => {
     (state: RootState) => state.orders.isLoading
   );
 
-  const error = useAppSelector((state: RootState) => state.orders.error);
   const isAuthenticated = useAppSelector(
     (state: RootState) => state.user.isAuthenticated
   );
@@ -30,13 +29,9 @@ export const ProfileOrders: FC = () => {
     }
   }, [dispatch, isAuthenticated]);
 
-  useEffect(() => {
-    dispatch(fetchUserOrders());
-  }, [dispatch]);
-
   if (isLoading) {
     return <Preloader />;
   }
 
   return <ProfileOrdersUI orders={orders} />;
-};
+});
