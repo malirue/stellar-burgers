@@ -32,6 +32,7 @@ export const BurgerConstructor: FC = () => {
 
   const onOrderClick = useCallback(() => {
     if (!isAuthenticated) {
+      localStorage.setItem('back', location.pathname);
       navigate('/login');
       return;
     }

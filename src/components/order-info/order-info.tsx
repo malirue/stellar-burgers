@@ -6,16 +6,12 @@ import { useAppDispatch, useAppSelector } from '../../services/store';
 import { useParams } from 'react-router-dom';
 import {
   fetchOrderByNumber,
-  selectCurrentOrder,
-  selectOrdersError,
-  selectOrdersLoading
+  selectCurrentOrder
 } from '../../services/slices/ordersSlice';
 
 export const OrderInfo: FC = () => {
   const { number } = useParams();
   const dispatch = useAppDispatch();
-
-  // Берём данные из стора
   const orderData = useAppSelector(selectCurrentOrder);
   const ingredients = useAppSelector((state) => state.ingredients.items);
 
