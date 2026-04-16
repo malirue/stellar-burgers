@@ -46,14 +46,6 @@ const App = () => {
       location.pathname.startsWith('/profile/orders/'),
     [location.pathname]
   );
-  // было;
-
-  // const isModalOpen =
-  //   location.pathname.startsWith('/feed/') ||
-  //   location.pathname.startsWith('/ingredients/') ||
-  //   location.pathname.startsWith('/profile/orders/');
-
-  // console.warn('isModalOpen', isModalOpen);
 
   const backgroundLocation = useMemo(() => {
     if (location.state?.background) {
@@ -61,7 +53,6 @@ const App = () => {
     }
     return location.pathname;
   }, [location]);
-  console.error('location', location);
 
   const error = useAppSelector((state: RootState) => state.ingredients.error);
 

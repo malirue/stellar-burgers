@@ -29,8 +29,6 @@ export const ProfileOrders: FC = memo(() => {
     }
   }, [dispatch, isAuthenticated]);
 
-  console.log('isLoading', isLoading);
-
   if (isLoading) {
     return <Preloader />;
   }
