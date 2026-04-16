@@ -18,8 +18,6 @@ export const OrderInfo: FC = () => {
   // Берём данные из стора
   const orderData = useAppSelector(selectCurrentOrder);
   const ingredients = useAppSelector((state) => state.ingredients.items);
-  const isLoading = useAppSelector(selectOrdersLoading);
-  const error = useAppSelector(selectOrdersError);
 
   useEffect(() => {
     if (number) {

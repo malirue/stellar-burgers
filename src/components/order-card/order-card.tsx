@@ -9,7 +9,7 @@ import { useAppSelector } from '../../services/store';
 const maxIngredients = 6;
 
 export const OrderCard: FC<OrderCardProps> = memo(({ order }) => {
-  const location = useLocation();
+  // const location = useLocation();
 
   const ingredients: TIngredient[] = useAppSelector(
     (state) => state.ingredients.items
@@ -53,7 +53,7 @@ export const OrderCard: FC<OrderCardProps> = memo(({ order }) => {
     <OrderCardUI
       orderInfo={orderInfo}
       maxIngredients={maxIngredients}
-      locationState={{ background: location }}
+      locationState={{ background: { pathname: '/profile/orders' } }}
     />
   );
 });
