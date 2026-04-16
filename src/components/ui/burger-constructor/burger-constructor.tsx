@@ -66,7 +66,6 @@ export const BurgerConstructorUI: FC<BurgerConstructorUIProps> = ({
       </ul>
       {hasValidBun ? (
         <div className={`${styles.element} mt-4 mr-4`}>
-          {/* Подумать как переделать эту чертову проверку на null */}
           {(() => {
             const bun = constructorItems.bun!;
             return (

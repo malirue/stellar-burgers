@@ -24,10 +24,4 @@ export const Modal: FC<TModalProps> = memo(({ title, onClose, children }) => {
     </ModalUI>,
     modalRoot as HTMLDivElement
   );
-
-  // return (
-  //   <ModalUI title={title} onClose={onClose}>
-  //     {children}
-  //   </ModalUI>
-  // );
 });

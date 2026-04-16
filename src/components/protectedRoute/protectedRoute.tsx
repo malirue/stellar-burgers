@@ -11,6 +11,8 @@ export const ProtectedRoute = ({
   );
 
   if (!isAuthenticated) {
+    console.warn('r');
+    localStorage.setItem('back', location.pathname);
     return <Navigate to='/login' replace />;
   }
 

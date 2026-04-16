@@ -21,7 +21,8 @@ export const Login: FC = () => {
 
   useEffect(() => {
     if (isAuthenticated) {
-      navigate('/profile', { replace: true });
+      navigate(localStorage.getItem('back') || '/profile', { replace: true });
+      localStorage.removeItem('back');
     }
   }, [isAuthenticated, navigate]);
 
