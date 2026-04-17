@@ -257,22 +257,6 @@ export const updateUserApi = (user: Partial<TRegisterData>) =>
     body: JSON.stringify(user)
   });
 
-// export const changePasswordApi = (data: {
-//   oldPassword: string;
-//   newPassword: string;
-// }) =>
-//   fetchWithRefresh<TServerResponse<{}>>(`${URL}/auth/change-password`, {
-//     method: 'POST',
-//     headers: {
-//       'Content-Type': 'application/json;charset=utf-8',
-//       authorization: getCookie('accessToken')
-//     } as HeadersInit,
-//     body: JSON.stringify(data)
-//   }).then((data) => {
-//     if (data?.success) return data;
-//     return Promise.reject(data);
-//   });
-
 export const logoutApi = () =>
   fetch(`${URL}/auth/logout`, {
     method: 'POST',

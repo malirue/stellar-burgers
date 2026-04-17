@@ -5,5 +5,5 @@ export type TBurgerIngredientUIProps = {
   ingredient: TIngredient;
   count?: number;
   locationState: { background: Location };
-  handleAdd: (e: React.MouseEvent<HTMLButtonElement>) => void; //точно ли так нужно?
+  handleAdd: (e: React.SyntheticEvent) => void;
 };

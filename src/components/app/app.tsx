@@ -25,7 +25,9 @@ import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useMemo } from 'react';
 import {
   fetchIngredients,
+  getUser,
   RootState,
+  updateUser,
   useAppDispatch,
   useAppSelector
 } from '@services';
@@ -63,6 +65,10 @@ const App = () => {
   useEffect(() => {
     dispatch(fetchIngredients());
   }, [dispatch]);
+
+  // useEffect(() => {
+  //   dispatch(getUser());
+  // }, [dispatch]);
 
   if (isAuthLoading) {
     return <Preloader />;

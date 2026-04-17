@@ -15,7 +15,7 @@ export const BurgerIngredient: FC<TBurgerIngredientProps> = memo(
     const location = useLocation();
     const dispatch = useAppDispatch();
 
-    const handleAdd = (e: React.SyntheticEvent<Element, Event>) => {
+    const handleAdd = (e: React.SyntheticEvent) => {
       e.stopPropagation();
       if (ingredient.type === 'bun') {
         const bun: TBun = {
