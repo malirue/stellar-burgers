@@ -66,18 +66,14 @@ const App = () => {
     dispatch(fetchIngredients());
   }, [dispatch]);
 
-  // useEffect(() => {
-  //   dispatch(getUser());
-  // }, [dispatch]);
-
-  if (isAuthLoading) {
-    return <Preloader />;
-  }
+  useEffect(() => {
+    dispatch(getUser());
+  }, [dispatch]);
 
   return (
     <div className={styles.app}>
       <AppHeader />
-      {isIngredientsLoading ? (
+      {isAuthLoading || isIngredientsLoading ? (
         <Preloader />
       ) : error ? (
         <div className={`${styles.error} text text_type_main-medium pt-4`}>

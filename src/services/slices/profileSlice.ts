@@ -9,6 +9,7 @@ import {
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { TUser } from '@utils-types';
 import { deleteCookie, setCookie } from '@utils';
+import { resolve } from 'path';
 
 export const registerUser = createAsyncThunk(
   'auth/register',
@@ -87,7 +88,7 @@ interface AuthState {
 const initialState: AuthState = {
   user: null,
   isAuthenticated: false,
-  isLoading: false,
+  isLoading: true,
   error: null
 };
 
