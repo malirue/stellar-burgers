@@ -47,7 +47,6 @@ export const burgerConstructorSlice = createSlice({
     },
 
     resetConstructor: (state) => {
-      state.constructorItems = { bun: null, ingredients: [] };
       state.orderModalData = null;
     }
   },
@@ -60,6 +59,7 @@ export const burgerConstructorSlice = createSlice({
       .addCase(fetchOrder.fulfilled, (state, action) => {
         state.orderModalData = action.payload.order as any;
         state.orderRequest = false;
+        state.constructorItems = { bun: null, ingredients: [] };
       })
       .addCase(fetchOrder.rejected, (state, action) => {
         state.orderRequest = false;
