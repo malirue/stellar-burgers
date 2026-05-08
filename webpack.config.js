@@ -1,7 +1,11 @@
 const path = require('path');
+const webpack = require('webpack');
 const ESLintPlugin = require('eslint-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const Dotenv = require('dotenv-webpack');
+
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config();
+}
 
 module.exports = {
   entry: path.resolve(__dirname, './src/index.tsx'),
@@ -54,7 +58,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: './public/index.html'
     }),
-    new Dotenv()
+    new webpack.EnvironmentPlugin(['BURGER_API_URL'])
   ],
   resolve: {
     extensions: [
@@ -76,8 +80,10 @@ module.exports = {
       '@ui': path.resolve(__dirname, './src/components/ui'),
       '@ui-pages': path.resolve(__dirname, './src/components/ui/pages'),
       '@utils-types': path.resolve(__dirname, './src/utils/types'),
+      '@utils': path.resolve(__dirname, './src/utils'),
       '@api': path.resolve(__dirname, './src/utils/burger-api.ts'),
       '@slices': path.resolve(__dirname, './src/services/slices'),
+      '@services': path.resolve(__dirname, 'src/services'),
       '@selectors': path.resolve(__dirname, './src/services/selectors')
     }
   },

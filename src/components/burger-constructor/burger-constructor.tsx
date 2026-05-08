@@ -1,24 +1,24 @@
-import { FC, useMemo } from 'react';
+import { FC, useCallback, useMemo } from 'react';
 import { TConstructorIngredient } from '@utils-types';
 import { BurgerConstructorUI } from '@ui';
+import {
+  fetchOrder,
+  resetConstructor,
+  setOrderRequest,
+  useAppDispatch,
+  useAppSelector
+} from '@services';
+import { useNavigate } from 'react-router-dom';
 
 export const BurgerConstructor: FC = () => {
-  /** TODO: взять переменные constructorItems, orderRequest и orderModalData из стора */
-  const constructorItems = {
-    bun: {
-      price: 0
-    },
-    ingredients: []
-  };
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
-  const orderRequest = false;
+  const { constructorItems, orderRequest, orderModalData } = useAppSelector(
+    (state) => state.burgerConstructor
+  );
 
-  const orderModalData = null;
-
-  const onOrderClick = () => {
-    if (!constructorItems.bun || orderRequest) return;
-  };
-  const closeOrderModal = () => {};
+  const isAuthenticated = useAppSelector((state) => state.user.isAuthenticated);
 
   const price = useMemo(
     () =>
@@ -30,7 +30,29 @@ export const BurgerConstructor: FC = () => {
     [constructorItems]
   );
 
-  return null;
+  const onOrderClick = useCallback(() => {
+    if (!isAuthenticated) {
+      localStorage.setItem('back', location.pathname);
+      navigate('/login');
+      return;
+    }
+
+    if (!constructorItems.bun || orderRequest) return;
+
+    dispatch(setOrderRequest(true));
+
+    const ingredientIds = constructorItems.ingredients.map((item) => item._id);
+    const orderData = [
+      constructorItems.bun._id,
+      ...ingredientIds,
+      constructorItems.bun._id
+    ];
+    dispatch(fetchOrder(orderData));
+  }, [dispatch, constructorItems, orderRequest]);
+
+  const closeOrderModal = useCallback(() => {
+    dispatch(resetConstructor());
+  }, [dispatch]);
 
   return (
     <BurgerConstructorUI

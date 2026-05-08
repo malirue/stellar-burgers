@@ -1,7 +1,7 @@
 import { setCookie, getCookie } from './cookie';
-import { TIngredient, TOrder, TOrdersData, TUser } from './types';
+import { TIngredient, TOrder, TUser } from './types';
 
-const URL = process.env.BURGER_API_URL;
+export const URL = process.env.BURGER_API_URL;
 
 const checkResponse = <T>(res: Response): Promise<T> =>
   res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
@@ -79,6 +79,16 @@ export const getIngredientsApi = () =>
       return Promise.reject(data);
     });
 
+export const getIngredientByIdApi = async (
+  id: string
+): Promise<TIngredient> => {
+  const response = await fetch(`${URL}/ingredients/${id}`);
+  if (!response.ok) {
+    throw new Error('Failed to fetch ingredient');
+  }
+  return response.json();
+};
+
 export const getFeedsApi = () =>
   fetch(`${URL}/orders/all`)
     .then((res) => checkResponse<TFeedsResponse>(res))
@@ -87,17 +97,23 @@ export const getFeedsApi = () =>
       return Promise.reject(data);
     });
 
-export const getOrdersApi = () =>
-  fetchWithRefresh<TFeedsResponse>(`${URL}/orders`, {
+export const getOrdersApi = () => {
+  const token = getCookie('accessToken');
+
+  if (!token) {
+    return Promise.reject(new Error('Токен авторизации отсутствует'));
+  }
+
+  return fetchWithRefresh<TFeedsResponse>(`${URL}/orders`, {
     method: 'GET',
     headers: {
-      'Content-Type': 'application/json;charset=utf-8',
-      authorization: getCookie('accessToken')
+      Authorization: token.trim()
     } as HeadersInit
   }).then((data) => {
     if (data?.success) return data.orders;
     return Promise.reject(data);
   });
+};
 
 type TOwner = {
   name: string;
@@ -117,7 +133,7 @@ type TNewOrder = {
   price: number;
 };
 
-type TNewOrderResponse = TServerResponse<{
+export type TNewOrderResponse = TServerResponse<{
   order: TNewOrder;
   name: string;
 }>;
@@ -245,8 +261,9 @@ export const logoutApi = () =>
   fetch(`${URL}/auth/logout`, {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json;charset=utf-8'
-    },
+      'Content-Type': 'application/json;charset=utf-8',
+      authorization: getCookie('accessToken')
+    } as HeadersInit,
     body: JSON.stringify({
       token: localStorage.getItem('refreshToken')
     })
