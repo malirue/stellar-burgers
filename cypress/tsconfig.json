@@ -2,8 +2,11 @@
   "extends": "../tsconfig.json",
   "compilerOptions": {
     "noEmit": true,
-
-    "types": ["cypress"]
+    "types": ["cypress", "node"],
+    "lib": ["es2019", "dom"],
+    "moduleResolution": "node",
+    "target": "ES2020"
   },
-  "include": ["../node_modules/cypress", "./**/*.ts"]
+  "include": ["**/*.ts", "**/*.tsx", "cypress/**/*"],
+  "exclude": ["node_modules", "dist"]
 }

@@ -1,0 +1,57 @@
+{
+  "success": true,
+  "data": [
+    {
+      "_id": "60d5f8a1e8a8b92d08f9e1a1",
+      "name": "Булка с кунжутом",
+      "type": "bun",
+      "proteins": 80,
+      "fat": 24,
+      "carbohydrates": 53,
+      "calories": 420,
+      "price": 100,
+      "image": "/images/bun.png",
+      "image_large": "/images/bun-large.png",
+      "image_mobile": "/images/bun-mobile.png"
+    },
+    {
+      "_id": "60d5f8a1e8a8b92d08f9e1a2",
+      "name": "Котлета из говядины",
+      "type": "main",
+      "proteins": 180,
+      "fat": 120,
+      "carbohydrates": 0,
+      "calories": 280,
+      "price": 200,
+      "image": "/images/beef.png",
+      "image_large": "/images/beef-large.png",
+      "image_mobile": "/images/beef-mobile.png"
+    },
+    {
+      "_id": "60d5f8a1e8a8b92d08f9e1a3",
+      "name": "Помидор",
+      "type": "main",
+      "proteins": 1,
+      "fat": 0,
+      "carbohydrates": 4,
+      "calories": 24,
+      "price": 50,
+      "image": "/images/tomato.png",
+      "image_large": "/images/tomato-large.png",
+      "image_mobile": "/images/tomato-mobile.png"
+    },
+    {
+      "_id": "60d5f8a1e8a8b92d08f9e1a4",
+      "name": "Сыр голландский",
+      "type": "sauce",
+      "proteins": 25,
+      "fat": 30,
+      "carbohydrates": 2,
+      "calories": 350,
+      "price": 80,
+      "image": "/images/cheese.png",
+      "image_large": "/images/cheese-large.png",
+      "image_mobile": "/images/cheese-mobile.png"
+    }
+  ]
+}
