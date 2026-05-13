@@ -21,9 +21,15 @@ export const BurgerConstructorUI: FC<BurgerConstructorUIProps> = ({
   const hasValidBun = !!constructorItems.bun;
 
   return (
-    <section className={styles.burger_constructor}>
+    <section
+      className={styles.burger_constructor}
+      data-testid='burger-constructor'
+    >
       {hasValidBun ? (
-        <div className={`${styles.element} mb-4 mr-4`}>
+        <div
+          className={`${styles.element} mb-4 mr-4`}
+          data-testid='constructor-bun-top'
+        >
           {(() => {
             const bun = constructorItems.bun!;
             return (
@@ -39,12 +45,13 @@ export const BurgerConstructorUI: FC<BurgerConstructorUIProps> = ({
         </div>
       ) : (
         <div
+          data-testid='no-buns-top'
           className={`${styles.noBuns} ${styles.noBunsTop} ml-8 mb-4 mr-5 text text_type_main-default`}
         >
           Выберите булки
         </div>
       )}
-      <ul className={styles.elements}>
+      <ul className={styles.elements} data-testid='constructor-fillings'>
         {constructorItems.ingredients.length > 0 ? (
           constructorItems.ingredients.map(
             (item: TConstructorIngredient, index: number) => (
@@ -58,6 +65,7 @@ export const BurgerConstructorUI: FC<BurgerConstructorUIProps> = ({
           )
         ) : (
           <div
+            data-testid='no-fillings'
             className={`${styles.noBuns} ml-8 mb-4 mr-5 text text_type_main-default`}
           >
             Выберите начинку
@@ -65,7 +73,10 @@ export const BurgerConstructorUI: FC<BurgerConstructorUIProps> = ({
         )}
       </ul>
       {hasValidBun ? (
-        <div className={`${styles.element} mt-4 mr-4`}>
+        <div
+          className={`${styles.element} mt-4 mr-4`}
+          data-testid='constructor-bun-bottom'
+        >
           {(() => {
             const bun = constructorItems.bun!;
             return (
@@ -81,12 +92,16 @@ export const BurgerConstructorUI: FC<BurgerConstructorUIProps> = ({
         </div>
       ) : (
         <div
+          data-testid='no-buns-bottom'
           className={`${styles.noBuns} ${styles.noBunsBottom} ml-8 mb-4 mr-5 text text_type_main-default`}
         >
           Выберите булки
         </div>
       )}
-      <div className={`${styles.total} mt-10 mr-4`}>
+      <div
+        className={`${styles.total} mt-10 mr-4`}
+        data-testid='total-price-container'
+      >
         <div className={`${styles.cost} mr-10`}>
           <p className={`text ${styles.text} mr-2`}>{price}</p>
           <CurrencyIcon type='primary' />
@@ -97,6 +112,7 @@ export const BurgerConstructorUI: FC<BurgerConstructorUIProps> = ({
           size='large'
           children='Оформить заказ'
           onClick={onOrderClick}
+          data-testid='order-button'
         />
       </div>
 
