@@ -1,0 +1,4 @@
+{
+  "success": false,
+  "message": "Cannot create order with empty ingredients list"
+}
