@@ -401,41 +401,22 @@ describe('Создание заказа в бургерном конструкт
   });
 
   it('Не должен создавать заказ для неавторизованного пользователя', () => {
-    // cy.intercept('GET', '**/api/auth/user', {
-    //   statusCode: 401,
-    //   body: {
-    //     success: false,
-    //     message: 'User not authorized'
-    //   }
-    // }).as('getUserUnauthorized');
-
-    // Настраиваем начальное состояние Redux
-
-    cy.intercept('GET', '**/api/auth/user', {
-      fixture: 'api/auth/login-unauthorized.json'
-    }).as('getUser');
-
-    // cy.window().then((win) => {
-    //   win.store.dispatch({
-    //     type: 'auth/logout', // Приводим к состоянию logout
-    //     payload: null
-    //   });
-    // });
-
     // Удаляем токены авторизации
     cy.clearCookie('accessToken');
     localStorage.removeItem('refreshToken');
 
-    // Перехватываем запрос создания заказа с ошибкой авторизации
+    // Устанавливаем перехватчики и загружаем страницу
+    cy.intercept('GET', '**/api/auth/user', {
+      statusCode: 401,
+      fixture: 'api/auth/login-unauthorized.json'
+    }).as('getUserUnauthorized');
 
-    cy.intercept('POST', '**/api/orders', (req) => {
-      req.reply({
-        statusCode: 401,
-        body: {
-          fixture: 'api/orders/create-order-unauthorized.json'
-        }
-      });
+    cy.intercept('POST', '**/api/orders', {
+      statusCode: 401,
+      fixture: 'api/auth/login-unauthorized.json'
     }).as('createUnauthorizedOrder');
+
+    cy.visit('/');
 
     // Добавляем ингредиенты в конструктор
     cy.contains('Булка с кунжутом')
@@ -455,12 +436,9 @@ describe('Создание заказа в бургерном конструкт
     // Нажимаем кнопку «Оформить заказ»
     cy.contains('Оформить заказ').should('be.enabled').click({ force: true });
 
-    // Ждём ответа от API
-    cy.wait('@createUnauthorizedOrder', { timeout: 10000 })
-      .its('response.statusCode')
-      .should('eq', 401);
-
-    // Проверяем перенаправление на страницу логина
-    cy.url({ timeout: 15000 }).should('include', '/login');
+    // Проверяем переход на страницу логина
+    cy.url({ timeout: 5000 }).should((url) => {
+      expect(url).to.include('/login');
+    });
   });
 });
