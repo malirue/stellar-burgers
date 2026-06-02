@@ -21,5 +21,40 @@ describe('rootReducer', () => {
       orderModalData: null,
       orderError: null
     });
+
+    // остальные редьюсеры
+
+    // Проверяем начальное состояние ingredients
+    expect(initialState.ingredients).toEqual({
+      items: [],
+      isLoading: false,
+      error: null
+    });
+
+    // Проверяем начальное состояние orders
+    expect(initialState.orders).toEqual({
+      userOrders: [],
+      feedOrders: [],
+      currentOrder: null,
+      isLoading: false,
+      error: null
+    });
+
+    // Проверяем начальное состояние user (profileSlice)
+    expect(initialState.user).toEqual({
+      user: null,
+      isAuthenticated: false,
+      isLoading: true,
+      error: null
+    });
+
+    // Проверяем начальное состояние feed
+    expect(initialState.feed).toEqual({
+      orders: [],
+      total: 0,
+      totalToday: 0,
+      isLoading: false,
+      error: null
+    });
   });
 });

@@ -1,3 +1,4 @@
+import { TOrder } from '@utils-types';
 import {
   clearCurrentOrder,
   fetchFeedOrders,
@@ -9,19 +10,43 @@ import {
 describe('ordersSlice', () => {
   const initialState = ordersSlice.getInitialState();
 
+  // Вспомогательные константы для переиспользования
+  const MOCK_ORDER: TOrder = {
+    _id: '1',
+    ingredients: [],
+    name: 'Test Order',
+    number: 123,
+    status: 'created',
+    updatedAt: '',
+    createdAt: ''
+  };
+
+  const MOCK_ORDERS: TOrder[] = [
+    {
+      _id: '1',
+      ingredients: [],
+      name: 'Order 1',
+      number: 123,
+      status: 'created',
+      updatedAt: '',
+      createdAt: ''
+    },
+    {
+      _id: '2',
+      ingredients: [],
+      name: 'Order 2',
+      number: 124,
+      status: 'created',
+      updatedAt: '',
+      createdAt: ''
+    }
+  ];
+
   describe('редьюсеры', () => {
     it('должен очищать текущий заказ', () => {
       const stateWithOrder = {
         ...initialState,
-        currentOrder: {
-          _id: '1',
-          ingredients: [],
-          name: 'Test Order',
-          number: 123,
-          status: 'created',
-          updatedAt: '',
-          createdAt: ''
-        }
+        currentOrder: MOCK_ORDER
       };
       const action = clearCurrentOrder();
       const state = ordersSlice.reducer(stateWithOrder, action);
@@ -40,43 +65,21 @@ describe('ordersSlice', () => {
     });
 
     it('должен сохранять пользовательские заказы и устанавливать isLoading в false при fulfilled', () => {
-      const mockOrders = [
-        {
-          _id: '1',
-          ingredients: [],
-          name: 'Order 1',
-          number: 123,
-          status: 'created',
-          updatedAt: '',
-          createdAt: ''
-        },
-        {
-          _id: '2',
-          ingredients: [],
-          name: 'Order 2',
-          number: 124,
-          status: 'created',
-          updatedAt: '',
-          createdAt: ''
-        }
-      ];
       const action = {
         type: fetchUserOrders.fulfilled.type,
-        payload: mockOrders
+        payload: MOCK_ORDERS
       };
       const state = ordersSlice.reducer(initialState, action);
 
-      expect(state.userOrders).toEqual(mockOrders);
+      expect(state.userOrders).toEqual(MOCK_ORDERS);
       expect(state.isLoading).toBe(false);
     });
 
     it('должен сохранять ошибку и устанавливать isLoading в false при rejected', () => {
-      const errorMessage = 'Ошибка загрузки заказов';
+      const errorMessage = 'Ошибка загрузки пользовательских заказов';
       const action = {
         type: fetchUserOrders.rejected.type,
-        error: {
-          message: errorMessage
-        }
+        error: errorMessage
       };
       const state = ordersSlice.reducer(initialState, action);
 
@@ -96,17 +99,7 @@ describe('ordersSlice', () => {
     });
 
     it('должен сохранять заказы ленты и устанавливать isLoading в false при fulfilled', () => {
-      const mockFeedOrders = [
-        {
-          _id: '1',
-          ingredients: [],
-          name: 'Feed Order 1',
-          number: 125,
-          status: 'created',
-          updatedAt: '',
-          createdAt: ''
-        }
-      ];
+      const mockFeedOrders = [MOCK_ORDER];
       const action = {
         type: fetchFeedOrders.fulfilled.type,
         payload: { orders: mockFeedOrders }
@@ -114,6 +107,18 @@ describe('ordersSlice', () => {
       const state = ordersSlice.reducer(initialState, action);
 
       expect(state.feedOrders).toEqual(mockFeedOrders);
+      expect(state.isLoading).toBe(false);
+    });
+
+    it('должен сохранять ошибку и устанавливать isLoading в false при rejected', () => {
+      const errorMessage = 'Ошибка загрузки ленты заказов';
+      const action = {
+        type: fetchFeedOrders.rejected.type,
+        payload: errorMessage
+      };
+      const state = ordersSlice.reducer(initialState, action);
+
+      expect(state.error).toBe(errorMessage);
       expect(state.isLoading).toBe(false);
     });
   });
@@ -128,22 +133,13 @@ describe('ordersSlice', () => {
     });
 
     it('должен сохранять текущий заказ при fulfilled', () => {
-      const mockOrder = {
-        _id: '1',
-        ingredients: [],
-        name: 'Single Order',
-        number: 126,
-        status: 'created',
-        updatedAt: '',
-        createdAt: ''
-      };
       const action = {
         type: fetchOrderByNumber.fulfilled.type,
-        payload: mockOrder
+        payload: MOCK_ORDER
       };
       const state = ordersSlice.reducer(initialState, action);
 
-      expect(state.currentOrder).toEqual(mockOrder);
+      expect(state.currentOrder).toEqual(MOCK_ORDER);
     });
 
     it('должен сохранять ошибку при rejected', () => {

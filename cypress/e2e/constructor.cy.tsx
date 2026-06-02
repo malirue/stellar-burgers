@@ -24,7 +24,7 @@ describe('API ингредиентов — моковые данные', () => {
     }).as('getIngredients');
   });
 
-  it('Должен загрузить ингредиенты с моковыми данными', () => {
+  it('При открытии страницы должен загрузить ингредиенты с моковыми данными', () => {
     cy.wait('@getIngredients').then((interception) => {
       expect(interception.response?.statusCode).to.equal(200);
       expect(interception.response?.body.success).to.be.true;
@@ -65,7 +65,6 @@ describe('Конструктор бургеров — добавление ин�
     }).as('getIngredients');
 
     // Игнорируем запросы авторизации
-    // А надо ли?
     cy.intercept('GET', '**/api/auth/user', {
       statusCode: 401,
       body: { message: 'Unauthorized' }
@@ -106,6 +105,7 @@ describe('Конструктор бургеров — добавление ин�
       });
 
     // Проверяем, что булки одинаковые
+    // зачем? ведь выше проверили
     cy.get('[data-testid="constructor-bun-top"]')
       .find('.constructor-element__text')
       .invoke('text')
@@ -235,6 +235,8 @@ describe('Модальные окна — тестирование функци�
       .click();
 
     // Ждём изменения URL
+    // может лучше точный адрес?
+    // не получится точный адрес т.к. у каждого ингрединета свой id, который отображается в адресной строке
     cy.url().should('include', '/ingredients/');
 
     // Проверяем заголовок модального окна
@@ -438,6 +440,7 @@ describe('Создание заказа в бургерном конструкт
 
     // Проверяем переход на страницу логина
     cy.url({ timeout: 5000 }).should((url) => {
+      // лучше точное совпадение
       expect(url).to.include('/login');
     });
   });
