@@ -201,32 +201,13 @@ describe('burgerConstructorSlice', () => {
         addIngredient(MOCK_INGREDIENT_2)
       );
 
-      // Act: пытаемся переместить с 0 на некорректный индекс 100
-      const action = moveIngredient({ fromIndex: 0, toIndex: 100 });
-      state = burgerConstructorSlice.reducer(state, action);
-
-      // Assert: ингредиент должен переместиться в конец массива (на индекс 1)
-      expect(state.constructorItems.ingredients[0]).toEqual(MOCK_INGREDIENT_2);
-      expect(state.constructorItems.ingredients[1]).toEqual(MOCK_INGREDIENT_1);
-    });
-    it('должен корректно обрабатывать некорректный toIndex (превышающий длину массива)', () => {
-      // Arrange: добавляем два ингредиента
-      let state = burgerConstructorSlice.reducer(
-        initialState,
-        addIngredient(MOCK_INGREDIENT_1)
-      );
-      state = burgerConstructorSlice.reducer(
-        state,
-        addIngredient(MOCK_INGREDIENT_2)
-      );
-
       // Act: перемещаем ингредиент с индекса 0 на индекс 100 (превышающий длину)
       const action = moveIngredient({ fromIndex: 0, toIndex: 100 });
       state = burgerConstructorSlice.reducer(state, action);
 
-      // Assert: MOCK_INGREDIENT_1 должен переместиться в конец, MOCK_INGREDIENT_2 остаётся первым
-      expect(state.constructorItems.ingredients[0]).toEqual(MOCK_INGREDIENT_2);
-      expect(state.constructorItems.ingredients[1]).toEqual(MOCK_INGREDIENT_1);
+      // Assert: состояние не должно поменяться
+      expect(state.constructorItems.ingredients[0]).toEqual(MOCK_INGREDIENT_1);
+      expect(state.constructorItems.ingredients[1]).toEqual(MOCK_INGREDIENT_2);
     });
   });
 

@@ -235,9 +235,7 @@ describe('Модальные окна — тестирование функци�
       .click();
 
     // Ждём изменения URL
-    // может лучше точный адрес?
-    // не получится точный адрес т.к. у каждого ингрединета свой id, который отображается в адресной строке
-    cy.url().should('include', '/ingredients/');
+    cy.url().should('include', 'http://localhost:4000/ingredients/');
 
     // Проверяем заголовок модального окна
     cy.contains('Детали ингредиента').should('be.visible');
@@ -439,9 +437,6 @@ describe('Создание заказа в бургерном конструкт
     cy.contains('Оформить заказ').should('be.enabled').click({ force: true });
 
     // Проверяем переход на страницу логина
-    cy.url({ timeout: 5000 }).should((url) => {
-      // лучше точное совпадение
-      expect(url).to.include('/login');
-    });
+    cy.url({ timeout: 5000 }).should('eq', 'http://localhost:4000/login');
   });
 });

@@ -44,16 +44,14 @@ export const burgerConstructorSlice = createSlice({
         fromIndex < 0 ||
         toIndex < 0 ||
         fromIndex >= ingredients.length ||
-        toIndex > ingredients.length
+        toIndex >= ingredients.length
       ) {
         return;
       }
 
-      const adjustedToIndex = Math.min(toIndex, ingredients.length);
-
       const ingredient = state.constructorItems.ingredients[fromIndex];
       state.constructorItems.ingredients.splice(fromIndex, 1);
-      state.constructorItems.ingredients.splice(adjustedToIndex, 0, ingredient);
+      state.constructorItems.ingredients.splice(toIndex, 0, ingredient);
     },
     setOrderRequest: (state, action: PayloadAction<boolean>) => {
       state.orderRequest = action.payload;

@@ -22,8 +22,6 @@ describe('rootReducer', () => {
       orderError: null
     });
 
-    // остальные редьюсеры
-
     // Проверяем начальное состояние ingredients
     expect(initialState.ingredients).toEqual({
       items: [],
@@ -40,7 +38,7 @@ describe('rootReducer', () => {
       error: null
     });
 
-    // Проверяем начальное состояние user (profileSlice)
+    // Проверяем начальное состояние profileSlice
     expect(initialState.user).toEqual({
       user: null,
       isAuthenticated: false,
