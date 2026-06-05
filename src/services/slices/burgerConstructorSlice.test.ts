@@ -1,4 +1,4 @@
-import { TConstructorIngredient } from '@utils-types';
+import { TBun, TConstructorIngredient, TIngredient } from '@utils-types';
 import {
   addIngredient,
   burgerConstructorSlice,
@@ -12,65 +12,85 @@ describe('burgerConstructorSlice', () => {
   const initialState = burgerConstructorSlice.getInitialState();
 
   // Вспомогательные константы для переиспользования
-  const MOCK_BUN: TConstructorIngredient = {
+  const MOCK_BUN: TBun = {
     _id: '2',
+    id: 'bun-2-id',
     name: 'Булка',
     type: 'bun',
     price: 50,
     image: '',
     image_mobile: '',
+    image_large: '',
     calories: 0,
     carbohydrates: 0,
     fat: 0,
     proteins: 0
   };
 
-  const MOCK_INGREDIENT_1: TConstructorIngredient = {
-    _id: '1',
+  const MOCK_INGREDIENT_1: TIngredient = {
+    id: '1',
     name: 'Котлета 1',
     type: 'main',
     price: 100,
     image: '',
     image_mobile: '',
+    image_large: '',
     calories: 0,
     carbohydrates: 0,
     fat: 0,
     proteins: 0
   };
 
-  const MOCK_INGREDIENT_2: TConstructorIngredient = {
+  const MOCK_INGREDIENT_2: TIngredient = {
     _id: '2',
     name: 'Котлета 2',
     type: 'main',
     price: 120,
     image: '',
     image_mobile: '',
+    image_large: '',
     calories: 0,
     carbohydrates: 0,
     fat: 0,
     proteins: 0
   };
 
-  const MOCK_INGREDIENT_3: TConstructorIngredient = {
+  const MOCK_INGREDIENT_3: TIngredient = {
     _id: '3',
     name: 'Котлета 3',
     type: 'main',
     price: 110,
     image: '',
     image_mobile: '',
+    image_large: '',
     calories: 0,
     carbohydrates: 0,
     fat: 0,
     proteins: 0
   };
 
+  const toConstructorIngredient = (
+    ingredient: TIngredient
+  ): TConstructorIngredient => ({
+    ...ingredient
+  });
+
+  const MOCK_CONSTRUCTOR_INGREDIENT_1 =
+    toConstructorIngredient(MOCK_INGREDIENT_1);
+  const MOCK_CONSTRUCTOR_INGREDIENT_2 =
+    toConstructorIngredient(MOCK_INGREDIENT_2);
+  const MOCK_CONSTRUCTOR_INGREDIENT_3 =
+    toConstructorIngredient(MOCK_INGREDIENT_3);
+
   describe('редьюсеры', () => {
     it('должен добавлять ингредиент в конструктор', () => {
-      const action = addIngredient(MOCK_INGREDIENT_1);
+      const action = addIngredient(MOCK_CONSTRUCTOR_INGREDIENT_1);
       const state = burgerConstructorSlice.reducer(initialState, action);
 
       expect(state.constructorItems.ingredients).toHaveLength(1);
-      expect(state.constructorItems.ingredients[0]).toEqual(MOCK_INGREDIENT_1);
+      expect(state.constructorItems.ingredients[0]).toEqual(
+        MOCK_CONSTRUCTOR_INGREDIENT_1
+      );
     });
 
     it('должен устанавливать булку в конструктор', () => {
@@ -84,11 +104,11 @@ describe('burgerConstructorSlice', () => {
       // Arrange: сначала добавляем два ингредиента
       let state = burgerConstructorSlice.reducer(
         initialState,
-        addIngredient(MOCK_INGREDIENT_1)
+        addIngredient(MOCK_CONSTRUCTOR_INGREDIENT_1)
       );
       state = burgerConstructorSlice.reducer(
         state,
-        addIngredient(MOCK_INGREDIENT_2)
+        addIngredient(MOCK_CONSTRUCTOR_INGREDIENT_2)
       );
 
       // Act: затем удаляем первый ингредиент
@@ -97,22 +117,24 @@ describe('burgerConstructorSlice', () => {
 
       // Assert
       expect(state.constructorItems.ingredients).toHaveLength(1);
-      expect(state.constructorItems.ingredients[0]).toEqual(MOCK_INGREDIENT_2);
+      expect(state.constructorItems.ingredients[0]).toEqual(
+        MOCK_CONSTRUCTOR_INGREDIENT_2
+      );
     });
 
     it('должен перемещать ингредиент в конструкторе: from 0 to 2', () => {
       // Arrange: добавляем три ингредиента
       let state = burgerConstructorSlice.reducer(
         initialState,
-        addIngredient(MOCK_INGREDIENT_1)
+        addIngredient(MOCK_CONSTRUCTOR_INGREDIENT_1)
       );
       state = burgerConstructorSlice.reducer(
         state,
-        addIngredient(MOCK_INGREDIENT_2)
+        addIngredient(MOCK_CONSTRUCTOR_INGREDIENT_2)
       );
       state = burgerConstructorSlice.reducer(
         state,
-        addIngredient(MOCK_INGREDIENT_3)
+        addIngredient(MOCK_CONSTRUCTOR_INGREDIENT_3)
       );
 
       // Act: перемещаем ингредиент с индекса 0 на индекс 2
@@ -120,24 +142,30 @@ describe('burgerConstructorSlice', () => {
       state = burgerConstructorSlice.reducer(state, action);
 
       // Assert: порядок должен стать [2, 3, 1]
-      expect(state.constructorItems.ingredients[0]).toEqual(MOCK_INGREDIENT_2);
-      expect(state.constructorItems.ingredients[1]).toEqual(MOCK_INGREDIENT_3);
-      expect(state.constructorItems.ingredients[2]).toEqual(MOCK_INGREDIENT_1);
+      expect(state.constructorItems.ingredients[0]).toEqual(
+        MOCK_CONSTRUCTOR_INGREDIENT_2
+      );
+      expect(state.constructorItems.ingredients[1]).toEqual(
+        MOCK_CONSTRUCTOR_INGREDIENT_3
+      );
+      expect(state.constructorItems.ingredients[2]).toEqual(
+        MOCK_CONSTRUCTOR_INGREDIENT_1
+      );
     });
 
     it('должен перемещать ингредиент: from 2 to 0', () => {
       // Arrange: добавляем три ингредиента
       let state = burgerConstructorSlice.reducer(
         initialState,
-        addIngredient(MOCK_INGREDIENT_1)
+        addIngredient(MOCK_CONSTRUCTOR_INGREDIENT_1)
       );
       state = burgerConstructorSlice.reducer(
         state,
-        addIngredient(MOCK_INGREDIENT_2)
+        addIngredient(MOCK_CONSTRUCTOR_INGREDIENT_2)
       );
       state = burgerConstructorSlice.reducer(
         state,
-        addIngredient(MOCK_INGREDIENT_3)
+        addIngredient(MOCK_CONSTRUCTOR_INGREDIENT_3)
       );
 
       // Act: перемещаем ингредиент с индекса 2 на индекс 0
@@ -145,20 +173,26 @@ describe('burgerConstructorSlice', () => {
       state = burgerConstructorSlice.reducer(state, action);
 
       // Assert: порядок должен стать [3, 1, 2]
-      expect(state.constructorItems.ingredients[0]).toEqual(MOCK_INGREDIENT_3);
-      expect(state.constructorItems.ingredients[1]).toEqual(MOCK_INGREDIENT_1);
-      expect(state.constructorItems.ingredients[2]).toEqual(MOCK_INGREDIENT_2);
+      expect(state.constructorItems.ingredients[0]).toEqual(
+        MOCK_CONSTRUCTOR_INGREDIENT_3
+      );
+      expect(state.constructorItems.ingredients[1]).toEqual(
+        MOCK_CONSTRUCTOR_INGREDIENT_1
+      );
+      expect(state.constructorItems.ingredients[2]).toEqual(
+        MOCK_CONSTRUCTOR_INGREDIENT_2
+      );
     });
 
     it('должен корректно обрабатывать перемещение when fromIndex equals toIndex', () => {
       // Arrange: добавляем два ингредиента
       let state = burgerConstructorSlice.reducer(
         initialState,
-        addIngredient(MOCK_INGREDIENT_1)
+        addIngredient(MOCK_CONSTRUCTOR_INGREDIENT_1)
       );
       state = burgerConstructorSlice.reducer(
         state,
-        addIngredient(MOCK_INGREDIENT_2)
+        addIngredient(MOCK_CONSTRUCTOR_INGREDIENT_2)
       );
 
       // Act: пытаемся переместить ингредиент с индекса 1 на индекс 1 (без изменений)
@@ -166,48 +200,60 @@ describe('burgerConstructorSlice', () => {
       state = burgerConstructorSlice.reducer(state, action);
 
       // Assert: порядок не должен измениться
-      expect(state.constructorItems.ingredients[0]).toEqual(MOCK_INGREDIENT_1);
-      expect(state.constructorItems.ingredients[1]).toEqual(MOCK_INGREDIENT_2);
+      expect(state.constructorItems.ingredients[0]).toEqual(
+        MOCK_CONSTRUCTOR_INGREDIENT_1
+      );
+      expect(state.constructorItems.ingredients[1]).toEqual(
+        MOCK_CONSTRUCTOR_INGREDIENT_2
+      );
     });
 
     it('должен корректно обрабатывать некорректный fromIndex (отрицательный)', () => {
       // Arrange: добавляем два ингредиента
       let state = burgerConstructorSlice.reducer(
         initialState,
-        addIngredient(MOCK_INGREDIENT_1)
+        addIngredient(MOCK_CONSTRUCTOR_INGREDIENT_1)
       );
       state = burgerConstructorSlice.reducer(
         state,
-        addIngredient(MOCK_INGREDIENT_2)
+        addIngredient(MOCK_CONSTRUCTOR_INGREDIENT_2)
       );
 
       // Act: пытаемся переместить с некорректного индекса -10 на 1
       const action = moveIngredient({ fromIndex: -10, toIndex: 1 });
       state = burgerConstructorSlice.reducer(state, action);
 
-      // Assert: состояние не должно измениться из-за некорректного fromIndex
-      expect(state.constructorItems.ingredients[0]).toEqual(MOCK_INGREDIENT_1);
-      expect(state.constructorItems.ingredients[1]).toEqual(MOCK_INGREDIENT_2);
+      // Assert: состояние не должно измениться из‑за некорректного fromIndex
+      expect(state.constructorItems.ingredients[0]).toEqual(
+        MOCK_CONSTRUCTOR_INGREDIENT_1
+      );
+      expect(state.constructorItems.ingredients[1]).toEqual(
+        MOCK_CONSTRUCTOR_INGREDIENT_2
+      );
     });
 
     it('должен корректно обрабатывать некорректный toIndex (превышающий длину массива)', () => {
       // Arrange: добавляем два ингредиента
       let state = burgerConstructorSlice.reducer(
         initialState,
-        addIngredient(MOCK_INGREDIENT_1)
+        addIngredient(MOCK_CONSTRUCTOR_INGREDIENT_1)
       );
       state = burgerConstructorSlice.reducer(
         state,
-        addIngredient(MOCK_INGREDIENT_2)
+        addIngredient(MOCK_CONSTRUCTOR_INGREDIENT_2)
       );
 
       // Act: перемещаем ингредиент с индекса 0 на индекс 100 (превышающий длину)
       const action = moveIngredient({ fromIndex: 0, toIndex: 100 });
       state = burgerConstructorSlice.reducer(state, action);
 
-      // Assert: состояние не должно поменяться
-      expect(state.constructorItems.ingredients[0]).toEqual(MOCK_INGREDIENT_1);
-      expect(state.constructorItems.ingredients[1]).toEqual(MOCK_INGREDIENT_2);
+      // Assert: состояние не должно поменяться (если ваша логика такая)
+      expect(state.constructorItems.ingredients[0]).toEqual(
+        MOCK_CONSTRUCTOR_INGREDIENT_1
+      );
+      expect(state.constructorItems.ingredients[1]).toEqual(
+        MOCK_CONSTRUCTOR_INGREDIENT_2
+      );
     });
   });
 
@@ -227,8 +273,8 @@ describe('burgerConstructorSlice', () => {
         name: 'Test Order',
         number: 123,
         status: 'created',
-        updatedAt: '',
-        createdAt: ''
+        updatedAt: '2023-01-01T00:00:00.000Z',
+        createdAt: '2023-01-01T00:00:00.000Z'
       };
       const action = {
         type: fetchOrder.fulfilled.type,
@@ -243,7 +289,10 @@ describe('burgerConstructorSlice', () => {
 
     it('должен обрабатывать rejected и устанавливать orderError', () => {
       const errorMessage = 'Ошибка оформления заказа';
-      const action = { type: fetchOrder.rejected.type, payload: errorMessage };
+      const action = {
+        type: fetchOrder.rejected.type,
+        payload: errorMessage
+      };
       const state = burgerConstructorSlice.reducer(initialState, action);
 
       expect(state.orderError).toBe(errorMessage);
@@ -262,8 +311,8 @@ describe('burgerConstructorSlice', () => {
           name: 'Test Order',
           number: 123,
           status: 'created',
-          updatedAt: '',
-          createdAt: ''
+          updatedAt: '2023-01-01T00:00:00.000Z',
+          createdAt: '2023-01-01T00:00:00.000Z'
         }
       };
 
@@ -273,6 +322,28 @@ describe('burgerConstructorSlice', () => {
 
       // Assert
       expect(state.orderModalData).toBeNull();
+    });
+
+    it('должен сбрасывать конструктор (bun и ingredients)', () => {
+      // Arrange: создаём состояние с булкой и ингредиентами
+      const stateWithItems = {
+        ...initialState,
+        constructorItems: {
+          bun: MOCK_BUN,
+          ingredients: [
+            MOCK_CONSTRUCTOR_INGREDIENT_1,
+            MOCK_CONSTRUCTOR_INGREDIENT_2
+          ]
+        }
+      };
+
+      // Act
+      const action = burgerConstructorSlice.actions.resetConstructor();
+      const state = burgerConstructorSlice.reducer(stateWithItems, action);
+
+      // Assert
+      expect(state.constructorItems.bun).toBeNull();
+      expect(state.constructorItems.ingredients).toHaveLength(0);
     });
   });
 });

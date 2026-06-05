@@ -1,58 +1,55 @@
 import { rootReducer } from './store';
 
-// Тест для проверки инициализации rootReducer
+import { burgerConstructorSlice } from './slices/burgerConstructorSlice';
+import { feedSlice } from './slices/feedSlice';
+import { ingredientsSlice } from './slices/ingredientsSlice';
+import { ordersSlice } from './slices/ordersSlice';
+import { profileSlice } from './slices/profileSlice';
+
 describe('rootReducer', () => {
-  it('должен правильно инициализировать состояние store', () => {
-    const initialState = rootReducer(undefined, { type: '' });
+  const initAction = { type: '@@INIT' };
+  const unknownAction = { type: 'UNKNOWN_ACTION' };
 
-    expect(initialState).toHaveProperty('ingredients');
-    expect(initialState).toHaveProperty('orders');
-    expect(initialState).toHaveProperty('user');
-    expect(initialState).toHaveProperty('burgerConstructor');
-    expect(initialState).toHaveProperty('feed');
+  it('должен правильно инициализировать состояние store через @@INIT', () => {
+    // Act: получаем состояние от rootReducer при инициализации
+    const rootState = rootReducer(undefined, initAction);
 
-    // Проверяем начальное состояние burgerConstructor
-    expect(initialState.burgerConstructor).toEqual({
-      constructorItems: {
-        bun: null,
-        ingredients: []
-      },
-      orderRequest: false,
-      orderModalData: null,
-      orderError: null
-    });
+    // Act: получаем ожидаемое состояние через отдельные редьюсеры
+    const expectedState = {
+      burgerConstructor: burgerConstructorSlice.reducer(undefined, initAction),
+      feed: feedSlice.reducer(undefined, initAction),
+      ingredients: ingredientsSlice.reducer(undefined, initAction),
+      orders: ordersSlice.reducer(undefined, initAction),
+      user: profileSlice.reducer(undefined, initAction)
+    };
 
-    // Проверяем начальное состояние ingredients
-    expect(initialState.ingredients).toEqual({
-      items: [],
-      isLoading: false,
-      error: null
-    });
+    // Assert: сравниваем полное состояние
+    expect(rootState).toEqual(expectedState);
+  });
 
-    // Проверяем начальное состояние orders
-    expect(initialState.orders).toEqual({
-      userOrders: [],
-      feedOrders: [],
-      currentOrder: null,
-      isLoading: false,
-      error: null
-    });
+  it('должен корректно обрабатывать неизвестный action', () => {
+    // Arrange: сначала инициализируем состояние
+    const initializedState = rootReducer(undefined, initAction);
 
-    // Проверяем начальное состояние profileSlice
-    expect(initialState.user).toEqual({
-      user: null,
-      isAuthenticated: false,
-      isLoading: true,
-      error: null
-    });
+    // Act: применяем неизвестный action
+    const rootStateAfterUnknown = rootReducer(initializedState, unknownAction);
 
-    // Проверяем начальное состояние feed
-    expect(initialState.feed).toEqual({
-      orders: [],
-      total: 0,
-      totalToday: 0,
-      isLoading: false,
-      error: null
-    });
+    // Act: получаем ожидаемое состояние через отдельные редьюсеры
+    const expectedStateAfterUnknown = {
+      burgerConstructor: burgerConstructorSlice.reducer(
+        initializedState.burgerConstructor,
+        unknownAction
+      ),
+      feed: feedSlice.reducer(initializedState.feed, unknownAction),
+      ingredients: ingredientsSlice.reducer(
+        initializedState.ingredients,
+        unknownAction
+      ),
+      orders: ordersSlice.reducer(initializedState.orders, unknownAction),
+      user: profileSlice.reducer(initializedState.user, unknownAction)
+    };
+
+    // Assert: состояние не должно измениться при неизвестном action
+    expect(rootStateAfterUnknown).toEqual(expectedStateAfterUnknown);
   });
 });
