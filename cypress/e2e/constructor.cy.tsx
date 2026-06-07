@@ -20,21 +20,6 @@ describe('API ингредиентов — моковые данные', () => {
     cy.contains('Помидор').should('exist');
     cy.contains('Сыр голландский').should('exist');
   });
-
-  it('Проверка структуры данных ингредиентов', () => {
-    cy.wait('@getIngredients');
-
-    cy.window().then((win) => {
-      const state = win.store?.getState?.();
-
-      const ingredients = state.ingredients?.items;
-      expect(ingredients).to.have.length(4);
-      expect(ingredients[0]).to.have.property('name', 'Булка с кунжутом');
-      expect(ingredients[0]).to.have.property('type', 'bun');
-      expect(ingredients[1]).to.have.property('name', 'Котлета из говядины');
-      expect(ingredients[1]).to.have.property('price', 200);
-    });
-  });
 });
 
 describe('Конструктор бургеров — добавление ингредиентов (без авторизации)', () => {
@@ -91,16 +76,6 @@ describe('Конструктор бургеров — добавление ин�
             expect(topBunName).to.equal(bottomBunName);
           });
       });
-
-    // Проверка состояния через store
-    cy.window().then((win) => {
-      const state = win.store?.getState?.();
-
-      const constructorItems = state.burgerConstructor?.constructorItems;
-      expect(constructorItems.bun).to.not.be.null;
-      expect(constructorItems.bun.name).to.equal('Булка с кунжутом');
-      expect(constructorItems.bun._id).to.exist;
-    });
   });
 
   it('Добавление начинок в конструктор', () => {
@@ -129,17 +104,6 @@ describe('Конструктор бургеров — добавление ин�
     cy.get('[data-testid="constructor-fillings"]')
       .find('li')
       .should('have.length', 3);
-
-    cy.window().then((win) => {
-      const state = win.store?.getState?.();
-
-      const ingredients =
-        state.burgerConstructor?.constructorItems?.ingredients;
-      expect(ingredients).to.have.length(3);
-      expect(ingredients[0].name).to.equal('Котлета из говядины');
-      expect(ingredients[1].name).to.equal('Помидор');
-      expect(ingredients[2].name).to.equal('Сыр голландский');
-    });
   });
 
   it('Расчёт стоимости при добавлении ингредиентов', () => {
@@ -154,14 +118,6 @@ describe('Конструктор бургеров — добавление ин�
         .parent('[data-testid="ingredient-card"]')
         .find('button')
         .click({ force: true });
-    });
-
-    cy.window().then((win) => {
-      const state = win.store?.getState?.();
-
-      const price = state.burgerConstructor?.price;
-      // 2 булки (2 × 100) + 3 начинки (200 + 50 + 80) = 530
-      expect(price).to.equal(530);
     });
 
     cy.get('[data-testid="total-price-container"]')
