@@ -207,7 +207,6 @@ describe('Модальные окна — тестирование функци�
       });
 
       cy.get('[data-testid="modal-close-button"]').click();
-      cy.wait(500);
     });
   });
 });
@@ -263,7 +262,6 @@ describe('Создание заказа в бургерном конструкт
     cy.contains('[data-testid="order-id"]', '12345').should('be.visible');
 
     cy.get('[data-testid="modal-close-button"]').should('be.visible').click();
-    cy.wait(500);
 
     // Ищем плейсхолдеры пустого конструктора
     cy.get('[data-testid="no-buns-top"]').should('be.visible');
@@ -280,9 +278,7 @@ describe('Создание заказа в бургерном конструкт
 
   it('Не должен создавать заказ при пустом конструкторе', () => {
     cy.intercept('POST', '**/api/orders').as('createEmptyOrder');
-    cy.contains('Оформить заказ').should('be.enabled').click({ force: true });
-
-    cy.wait(1000);
+    cy.contains('Оформить заказ').should('be.enabled').click();
 
     cy.get('@createEmptyOrder.all').then((interceptions) => {
       expect(interceptions).to.have.length(0);
