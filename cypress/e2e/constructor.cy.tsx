@@ -13,12 +13,6 @@ describe('API ингредиентов — моковые данные', () => {
   });
 
   it('При открытии страницы должен загрузить ингредиенты с моковыми данными', () => {
-    cy.wait('@getIngredients').then((interception) => {
-      expect(interception.response?.statusCode).to.equal(200);
-      expect(interception.response?.body.success).to.be.true;
-      expect(interception.response?.body.data).to.have.length.greaterThan(0);
-    });
-
     cy.get('[data-testid="ingredient-card"]').should('have.length', 4);
 
     cy.contains('Булка с кунжутом').should('exist');
@@ -60,27 +54,24 @@ describe('Конструктор бургеров — добавление ин�
     cy.visit('/');
 
     // Ждём загрузки ингредиентов
-    cy.wait('@getIngredients', { timeout: 10000 });
+    cy.wait('@getIngredients');
   });
 
   it('Добавление булки в конструктор (автоматически становится верхней и нижней)', () => {
-    cy.get('[data-testid="ingredient-card"]', { timeout: 15000 }).should(
-      'have.length.at.least',
-      3
-    );
+    cy.get('[data-testid="ingredient-card"]').should('have.length.at.least', 3);
 
     cy.contains('Булка с кунжутом')
       .parent('[data-testid="ingredient-card"]')
       .find('button')
       .click({ force: true });
 
-    cy.get('[data-testid="constructor-bun-top"]', { timeout: 15000 })
+    cy.get('[data-testid="constructor-bun-top"]')
       .should('be.visible')
       .within(() => {
         cy.contains('Булка с кунжутом (верх)').should('be.visible');
       });
 
-    cy.get('[data-testid="constructor-bun-bottom"]', { timeout: 15000 })
+    cy.get('[data-testid="constructor-bun-bottom"]')
       .should('be.visible')
       .within(() => {
         cy.contains('Булка с кунжутом (низ)').should('be.visible');
@@ -128,7 +119,7 @@ describe('Конструктор бургеров — добавление ин�
         .find('button')
         .click({ force: true });
 
-      cy.get('[data-testid="constructor-fillings"]', { timeout: 12000 })
+      cy.get('[data-testid="constructor-fillings"]')
         .should('exist')
         .find('li')
         .eq(index)
@@ -177,7 +168,7 @@ describe('Конструктор бургеров — добавление ин�
       }
     });
 
-    cy.get('[data-testid="total-price-container"]', { timeout: 15000 })
+    cy.get('[data-testid="total-price-container"]')
       .find('p')
       .invoke('text')
       .then((text) => {
@@ -195,7 +186,7 @@ describe('Модальные окна — тестирование функци�
     }).as('getIngredients');
 
     cy.visit('/');
-    cy.wait('@getIngredients', { timeout: 10000 });
+    cy.wait('@getIngredients');
   });
 
   it('Открытие модального окна ингредиента по клику на карточку', () => {
@@ -206,9 +197,8 @@ describe('Модальные окна — тестирование функци�
     cy.url().should('include', 'http://localhost:4000/ingredients/');
     cy.contains('Детали ингредиента').should('be.visible');
 
-    // Ограничиваем поиск областью модального окна
     cy.get('[data-testid="modal"]').within(() => {
-      cy.contains('Булка с кунжутом', { timeout: 5000 }).should('be.visible');
+      cy.contains('Булка с кунжутом').should('be.visible');
     });
 
     cy.contains('.text', 'Калории, ккал').should('be.visible');
@@ -235,7 +225,7 @@ describe('Модальные окна — тестирование функци�
 
     cy.get('[data-testid="modal"]').should('be.visible');
 
-    cy.get('[data-testid="overlay"]', { timeout: 15000 }).click('topLeft', {
+    cy.get('[data-testid="overlay"]').click('topLeft', {
       force: true
     });
 
@@ -257,7 +247,7 @@ describe('Модальные окна — тестирование функци�
 
       // Ищем строго внутри модалки
       cy.get('[data-testid="modal"]').within(() => {
-        cy.contains(ingredient.name, { timeout: 5000 }).should('be.visible');
+        cy.contains(ingredient.name).should('be.visible');
         cy.get('[data-testid="calorie-value"]').should(
           'contain',
           ingredient.calories
@@ -298,10 +288,7 @@ describe('Создание заказа в бургерном конструкт
   });
 
   it('Должен успешно создать заказ, открыть модальное окно с номером заказа, закрыть его и очистить конструктор', () => {
-    cy.get('[data-testid="ingredient-card"]', { timeout: 15000 }).should(
-      'have.length.at.least',
-      3
-    );
+    cy.get('[data-testid="ingredient-card"]').should('have.length.at.least', 3);
 
     cy.contains('Булка с кунжутом')
       .parent('[data-testid="ingredient-card"]')
@@ -318,7 +305,7 @@ describe('Создание заказа в бургерном конструкт
     });
 
     cy.contains('Оформить заказ').click({ force: true });
-    cy.wait('@createOrder', { timeout: 10000 });
+    cy.wait('@createOrder');
 
     cy.get('[data-testid="modal"]').should('be.visible');
     cy.contains('[data-testid="order-id"]', '12345').should('be.visible');

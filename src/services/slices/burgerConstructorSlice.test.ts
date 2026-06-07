@@ -14,7 +14,6 @@ describe('burgerConstructorSlice', () => {
   // Вспомогательные константы для переиспользования
   const MOCK_BUN: TBun = {
     _id: '2',
-    id: 'bun-2-id',
     name: 'Булка',
     type: 'bun',
     price: 50,
@@ -28,7 +27,7 @@ describe('burgerConstructorSlice', () => {
   };
 
   const MOCK_INGREDIENT_1: TIngredient = {
-    id: '1',
+    _id: '1',
     name: 'Котлета 1',
     type: 'main',
     price: 100,
@@ -72,7 +71,8 @@ describe('burgerConstructorSlice', () => {
   const toConstructorIngredient = (
     ingredient: TIngredient
   ): TConstructorIngredient => ({
-    ...ingredient
+    ...ingredient,
+    id: ingredient._id
   });
 
   const MOCK_CONSTRUCTOR_INGREDIENT_1 =
