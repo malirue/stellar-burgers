@@ -26,14 +26,13 @@ describe('API ингредиентов — моковые данные', () => {
 
     cy.window().then((win) => {
       const state = win.store?.getState?.();
-      if (state) {
-        const ingredients = state.ingredients?.items;
-        expect(ingredients).to.have.length(4);
-        expect(ingredients[0]).to.have.property('name', 'Булка с кунжутом');
-        expect(ingredients[0]).to.have.property('type', 'bun');
-        expect(ingredients[1]).to.have.property('name', 'Котлета из говядины');
-        expect(ingredients[1]).to.have.property('price', 200);
-      }
+
+      const ingredients = state.ingredients?.items;
+      expect(ingredients).to.have.length(4);
+      expect(ingredients[0]).to.have.property('name', 'Булка с кунжутом');
+      expect(ingredients[0]).to.have.property('type', 'bun');
+      expect(ingredients[1]).to.have.property('name', 'Котлета из говядины');
+      expect(ingredients[1]).to.have.property('price', 200);
     });
   });
 });
@@ -96,12 +95,11 @@ describe('Конструктор бургеров — добавление ин�
     // Проверка состояния через store
     cy.window().then((win) => {
       const state = win.store?.getState?.();
-      if (state) {
-        const constructorItems = state.burgerConstructor?.constructorItems;
-        expect(constructorItems.bun).to.not.be.null;
-        expect(constructorItems.bun.name).to.equal('Булка с кунжутом');
-        expect(constructorItems.bun._id).to.exist;
-      }
+
+      const constructorItems = state.burgerConstructor?.constructorItems;
+      expect(constructorItems.bun).to.not.be.null;
+      expect(constructorItems.bun.name).to.equal('Булка с кунжутом');
+      expect(constructorItems.bun._id).to.exist;
     });
   });
 
@@ -134,14 +132,13 @@ describe('Конструктор бургеров — добавление ин�
 
     cy.window().then((win) => {
       const state = win.store?.getState?.();
-      if (state) {
-        const ingredients =
-          state.burgerConstructor?.constructorItems?.ingredients;
-        expect(ingredients).to.have.length(3);
-        expect(ingredients[0].name).to.equal('Котлета из говядины');
-        expect(ingredients[1].name).to.equal('Помидор');
-        expect(ingredients[2].name).to.equal('Сыр голландский');
-      }
+
+      const ingredients =
+        state.burgerConstructor?.constructorItems?.ingredients;
+      expect(ingredients).to.have.length(3);
+      expect(ingredients[0].name).to.equal('Котлета из говядины');
+      expect(ingredients[1].name).to.equal('Помидор');
+      expect(ingredients[2].name).to.equal('Сыр голландский');
     });
   });
 
@@ -161,11 +158,10 @@ describe('Конструктор бургеров — добавление ин�
 
     cy.window().then((win) => {
       const state = win.store?.getState?.();
-      if (state) {
-        const price = state.burgerConstructor?.price;
-        // 2 булки (2 × 100) + 3 начинки (200 + 50 + 80) = 530
-        expect(price).to.equal(530);
-      }
+
+      const price = state.burgerConstructor?.price;
+      // 2 булки (2 × 100) + 3 начинки (200 + 50 + 80) = 530
+      expect(price).to.equal(530);
     });
 
     cy.get('[data-testid="total-price-container"]')

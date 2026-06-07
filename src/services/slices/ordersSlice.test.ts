@@ -77,10 +77,10 @@ describe('ordersSlice', () => {
 
     it('должен сохранять ошибку и устанавливать isLoading в false при rejected', () => {
       const errorMessage = 'Ошибка загрузки пользовательских заказов';
-      const action = {
-        type: fetchUserOrders.rejected.type,
-        error: errorMessage
-      };
+      const action = fetchUserOrders.rejected(
+        new Error(errorMessage),
+        'requestId'
+      );
       const state = ordersSlice.reducer(initialState, action);
 
       expect(state.error).toBe(errorMessage);
