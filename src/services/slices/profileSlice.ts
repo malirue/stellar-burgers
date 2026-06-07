@@ -9,7 +9,6 @@ import {
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { TUser } from '@utils-types';
 import { deleteCookie, setCookie } from '@utils';
-import { resolve } from 'path';
 
 export const registerUser = createAsyncThunk(
   'auth/register',

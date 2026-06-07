@@ -13,7 +13,7 @@ describe('burgerConstructorSlice', () => {
 
   // Вспомогательные константы для переиспользования
   const MOCK_BUN: TBun = {
-    _id: '2',
+    _id: '2.2',
     name: 'Булка',
     type: 'bun',
     price: 50,

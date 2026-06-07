@@ -47,7 +47,7 @@ describe('Конструктор бургеров — добавление ин�
     cy.contains('Булка с кунжутом')
       .parent('[data-testid="ingredient-card"]')
       .find('button')
-      .click({ force: true });
+      .click();
 
     cy.get('[data-testid="constructor-bun-top"]')
       .should('be.visible')
@@ -82,7 +82,7 @@ describe('Конструктор бургеров — добавление ин�
     cy.contains('Булка с кунжутом')
       .parent('[data-testid="ingredient-card"]')
       .find('button')
-      .click({ force: true });
+      .click();
 
     const fillings = ['Котлета из говядины', 'Помидор', 'Сыр голландский'];
 
@@ -90,7 +90,7 @@ describe('Конструктор бургеров — добавление ин�
       cy.contains(filling)
         .parent('[data-testid="ingredient-card"]')
         .find('button')
-        .click({ force: true });
+        .click();
 
       cy.get('[data-testid="constructor-fillings"]')
         .should('exist')
@@ -110,14 +110,14 @@ describe('Конструктор бургеров — добавление ин�
     cy.contains('Булка с кунжутом')
       .parent('[data-testid="ingredient-card"]')
       .find('button')
-      .click({ force: true });
+      .click();
 
     const fillings = ['Котлета из говядины', 'Помидор', 'Сыр голландский'];
     fillings.forEach((filling) => {
       cy.contains(filling)
         .parent('[data-testid="ingredient-card"]')
         .find('button')
-        .click({ force: true });
+        .click();
     });
 
     cy.get('[data-testid="total-price-container"]')
@@ -244,7 +244,7 @@ describe('Создание заказа в бургерном конструкт
     cy.contains('Булка с кунжутом')
       .parent('[data-testid="ingredient-card"]')
       .find('button')
-      .click({ force: true });
+      .click();
 
     const fillings = ['Котлета из говядины', 'Помидор', 'Сыр голландский'];
 
@@ -252,10 +252,10 @@ describe('Создание заказа в бургерном конструкт
       cy.contains(filling)
         .parent('[data-testid="ingredient-card"]')
         .find('button')
-        .click({ force: true });
+        .click();
     });
 
-    cy.contains('Оформить заказ').click({ force: true });
+    cy.contains('Оформить заказ').click();
     cy.wait('@createOrder');
 
     cy.get('[data-testid="modal"]').should('be.visible');
@@ -302,18 +302,18 @@ describe('Создание заказа в бургерном конструкт
     cy.contains('Булка с кунжутом')
       .parent('[data-testid="ingredient-card"]')
       .find('button')
-      .click({ force: true });
+      .click();
 
     const fillings = ['Котлета из говядины', 'Помидор', 'Сыр голландский'];
     fillings.forEach((filling) => {
       cy.contains(filling)
         .parent('[data-testid="ingredient-card"]')
         .find('button')
-        .click({ force: true });
+        .click();
     });
 
     // Нажимаем «Оформить заказ»
-    cy.contains('Оформить заказ').should('be.enabled').click({ force: true });
+    cy.contains('Оформить заказ').should('be.enabled').click();
 
     // Ждём редирект на страницу логина
     cy.url().should('include', '/login');
