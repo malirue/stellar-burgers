@@ -38,6 +38,17 @@ export const burgerConstructorSlice = createSlice({
       action: PayloadAction<{ fromIndex: number; toIndex: number }>
     ) => {
       const { fromIndex, toIndex } = action.payload;
+
+      const ingredients = state.constructorItems.ingredients;
+      if (
+        fromIndex < 0 ||
+        toIndex < 0 ||
+        fromIndex >= ingredients.length ||
+        toIndex >= ingredients.length
+      ) {
+        return;
+      }
+
       const ingredient = state.constructorItems.ingredients[fromIndex];
       state.constructorItems.ingredients.splice(fromIndex, 1);
       state.constructorItems.ingredients.splice(toIndex, 0, ingredient);
@@ -48,6 +59,7 @@ export const burgerConstructorSlice = createSlice({
 
     resetConstructor: (state) => {
       state.orderModalData = null;
+      state.constructorItems = { bun: null, ingredients: [] };
     }
   },
   extraReducers: (builder) => {
@@ -68,6 +80,7 @@ export const burgerConstructorSlice = createSlice({
   }
 });
 
+// лучше перед слайс перенести
 export const fetchOrder = createAsyncThunk(
   'burgerConstructor/fetchOrder',
   async (data: string[], { rejectWithValue }): Promise<TNewOrderResponse> => {

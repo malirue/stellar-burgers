@@ -86,6 +86,10 @@ export const ordersSlice = createSlice({
         state.feedOrders = action.payload.orders;
         state.isLoading = false;
       })
+      .addCase(fetchFeedOrders.rejected, (state, action) => {
+        state.error = action.payload as string;
+        state.isLoading = false;
+      })
       .addCase(fetchOrderByNumber.pending, (state) => {
         state.error = null;
       })
