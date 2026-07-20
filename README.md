@@ -1,19 +1,58 @@
-# Проектная работа 11-го спринта
+## Особенности проекта
 
-[Макет](<https://www.figma.com/file/vIywAvqfkOIRWGOkfOnReY/React-Fullstack_-Проектные-задачи-(3-месяца)_external_link?type=design&node-id=0-1&mode=design>)
+- **TypeScript** с настроенными алиасами (`@pages`, `@components`, `@utils` и др.)
+- **Webpack** как сборщик (без Create React App / Vite)
+- **Redux Toolkit + react-redux** для управления состоянием
+- **Storybook** для изолированной разработки и демонстрации компонентов
+- **Jest + Testing Library** для юнит-тестов
+- **Cypress** для E2E-тестирования
+- **ESLint + Prettier** для контроля качества кода и автоформатирования
+- **Алиасы путей** в `tsconfig.json` для удобных импортов
 
-[Чеклист](https://www.notion.so/praktikum/0527c10b723d4873aa75686bad54b32e?pvs=4)
+---
 
-## Этапы работы:
+## Стек технологий
 
-1. Разверните проект и ознакомьтесь с кодом. Все необходимые вам компоненты уже созданы и лежат в папке `src/components`
+| Категория                | Инструменты                                 |
+| ------------------------ | ------------------------------------------- |
+| Фреймворк                | React 18                                    |
+| Язык                     | TypeScript                                  |
+| Сборка                   | Webpack 5                                   |
+| Состояние                | Redux Toolkit, react-redux, redux-thunk     |
+| Роутинг                  | react-router-dom v6                         |
+| UI‑компоненты            | @zlden/react-developer-burger-ui-components |
+| Тестирование             | Jest, React Testing Library, Cypress        |
+| Документация компонентов | Storybook 7                                 |
+| Качество кода            | ESLint (Airbnb + Prettier), Prettier        |
 
-2. Настройте роутинг.
+---
 
-3. Напишите функционал запросов данных с сервера, используя `Redux` и глобальный `store`. Сами "ручки" уже прописаны и лежат в `utils/burger-api.ts`
+## Установка
 
-4. Настройте авторизацию и создайте защищённые роуты.
+1. Клонируйте репозиторий.
+2. Установите зависимости:
 
-## Важно:
+```bash
+npm install
+```
 
-Для корректной работы запросов к серверу необходимо добавить переменную BURGER_API_URL в окружение. Сама ссылка находится в файле `.env.example`.
+Если возникают проблемы с peer-зависимостями, можно использовать:
+
+```bash
+npm install --legacy-peer-deps
+```
+
+## Запуск
+
+| Задача                                          | Команда                                 |
+| ----------------------------------------------- | --------------------------------------- |
+| Запуск в режиме разработки (Webpack Dev Server) | `npm start`                             |
+| Сборка для production                           | `npm run build `                        |
+| Запуск Storybook                                | `npm run storybook`                     |
+| Сборка Storybook                                | `npm run build-storybook`               |
+| Юнит-тесты (Jest)                               | `npm test`                              |
+| E2E-тесты (Cypress)                             | `npm run cypress:open`                  |
+| Проверка кода (ESLint)                          | `npm run lint`                          |
+| Автоисправление ошибок форматирования           | `npm run lint:fix` или `npm run format` |
+
+
